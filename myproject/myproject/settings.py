@@ -147,7 +147,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # ローカルでの開発のためメールをコンソールで表示する
 
-LOGIN_REDIRECT_URL = 'tabelog:welcome'  # ログイン成功後の遷移先の指定
-ACCOUNT_LOGOUT_REDIRECT_URL = ''  # ログアウト成功後の遷移先の指定
+LOGIN_REDIRECT_URL = 'tabelog:home'  # ログイン成功後の遷移先の指定
+ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/signup/'  # ログアウト成功後の遷移先の指定
 
 ACCOUNT_LOGOUT_ON_GET = True  # 確認を行わずログアウトする設定
