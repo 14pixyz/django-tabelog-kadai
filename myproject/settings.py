@@ -12,9 +12,13 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import environ
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+env = environ.Env()
+env.read_env(os.path.join(BASE_DIR, '.env'))
 
 
 # Quick-start development settings - unsuitable for production
@@ -155,3 +159,16 @@ LOGIN_REDIRECT_URL = 'tabelog:home'  # ログイン成功後の遷移先の指�
 ACCOUNT_LOGOUT_REDIRECT_URL = 'account_signup'  # ログアウト成功後の遷移先の指定
 
 ACCOUNT_LOGOUT_ON_GET = True  # 確認を行わずログアウトする設定
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+# stripe
+STRIPE_BASE_URL = 'https://api.stripe.com'
+STRIPE_PUBLIC_KEY = env('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
+STRIPE_PRICE_ID = env('STRIPE_PRICE_ID')
+STRIPE_ACCOUNT_ID = env('STRIPE_ACCOUNT_ID')
+
+
+
