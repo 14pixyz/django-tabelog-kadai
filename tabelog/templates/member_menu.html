@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1>会員メニュー</h1>
+    <a href="{% url 'tabelog:credit-register' %}">有料会員登録</a><br>
+    <a href="{% url 'tabelog:credit-update' %}">クレジットカード変更</a><br>
+    <a href="{% url 'tabelog:subscription-cancel' %}">有料会員解約</a><br>
+
+    <br>
+    <a href="{% url 'tabelog:home' %}">戻る</a>
+{% endblock %}

@@ -5,3 +5,6 @@ class HomeView(generic.TemplateView):
 
 class WelcomeView(generic.TemplateView):
     template_name = 'welcome.html'
+
+class MemberView(generic.TemplateView):
+    template_name = 'member_menu.html'
