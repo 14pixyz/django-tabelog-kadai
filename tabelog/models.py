@@ -66,3 +66,21 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return self.user_type == UserType.SUPPORTER
 
 
+class Category(models.Model):
+    id = models.AutoField(primary_key=True, unique=True)
+    name = models.CharField(max_length=150)
+    create_datetime = models.DateTimeField(auto_now_add=True)
+    update_datetime = models.DateTimeField(auto_now=True)
+
+
+class Store(models.Model):
+    id = models.AutoField(primary_key=True, unique=True)
+    name = models.CharField(max_length=150)
+    adress = models.CharField(max_length=150)
+    opening_hours = models.TimeField()
+    budget = models.CharField(max_length=30)
+    tel = models.CharField(max_length=15)
+    image = models.ImageField(null=True, blank=True)
+    create_datetime = models.DateTimeField(auto_now_add=True)
+    update_datetime = models.DateTimeField(auto_now=True)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT)
