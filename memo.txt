@@ -5,8 +5,11 @@
 2024-05-20 20:45:00　Stripeでのカードの登録、変更、解約を実装した
 2024-05-20 20:45:29　会員ページを作成し、カード情報についてのリンクを設置した
 
+
+<コマンド集>
 python manage.py makemigrations
 python manage.py migrate
 python manage.py createsuperuser
 python manage.py runserver
 pip install -r requirements.txt
+ git branch -d <ブランチ名>
