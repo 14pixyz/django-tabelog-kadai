@@ -1,1 +1,59 @@
-<h1>店舗一覧</h1>
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+    {% block content %}
+    <h1>店舗一覧</h1>
+
+    <div class="data-organization">
+        <form action="" method="get">
+          <input name="query" value="{{ request.GET.query }}" type="text" />
+          <button type="submit">絞り込む</button>
+        </form>
+    </div>
+
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>店舗名</th>
+                <th>住所</th>
+                <th>営業時間</th>
+                <th>予算目安</th>
+                <th>連絡先</th>
+                <th>店舗画像</th>
+            </tr>
+        </thead>
+        {% for store in store_list %}
+        <tr>
+            <td>{{ store.name }}</td>
+            <td>{{ store.adress }}</td>
+            <td>{{ store.opening_hours }}〜{{ store.close_hours }}</td>
+            <td>{{ store.budget }}円</td>
+            <td>{{ store.tel }}</td>
+            {% if store.image %}
+                <td><img src="{{ store.image.url }}" style="width:100px height:auto;"></td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+    {# ページの表示 #}
+    {{ page_obj.number }} / {{ page_obj.paginator.num_pages }} ページ<br>
+
+    {# 前へ #}
+    {% if page_obj.has_previous %}
+    <a href="?page=1">&laquo; 先頭</a>
+    <a href="?page={{ page_obj.previous_page_number }}">前へ</a>
+    {% endif %}
+
+    {# 次へ #}
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">次へ</a>
+    <a href="?page={{ page_obj.paginator.num_pages }}">最後 &raquo;</a>
+    {% endif %}
+    {% endblock %}
+</body>
+</html>
