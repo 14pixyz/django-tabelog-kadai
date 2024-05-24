@@ -82,7 +82,7 @@ class Store(models.Model):
     adress = models.CharField(max_length=150)
     opening_hours = models.TimeField()
     close_hours = models.TimeField()
-    budget = models.CharField(max_length=30)
+    budget = models.PositiveIntegerField()
     tel = models.CharField(max_length=15)
     image = models.ImageField(null=True, blank=True)
     create_datetime = models.DateTimeField(auto_now_add=True)
