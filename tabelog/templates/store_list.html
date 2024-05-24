@@ -10,9 +10,9 @@
     <h1>店舗一覧</h1>
 
     <div class="data-organization">
-        <form action="" method="get">
-          <input name="query" value="{{ request.GET.query }}" type="text" />
-          <button type="submit">絞り込む</button>
+        <form class="d-flex" action="{% url 'tabelog:store-list' %}" method="get">
+            <input name="q" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-primary" type="submit">Search</button>
         </form>
     </div>
 

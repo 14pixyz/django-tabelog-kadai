@@ -87,7 +87,7 @@ class Store(models.Model):
     image = models.ImageField(null=True, blank=True)
     create_datetime = models.DateTimeField(auto_now_add=True)
     update_datetime = models.DateTimeField(auto_now=True)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    category = models.ManyToManyField(Category, related_name='tags', blank=True)
 
     def __str__(self):
         return self.name

@@ -13,12 +13,11 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class StoreAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'category', 'image',)
+    list_display = ('id', 'name', 'image')
     search_fields = ('name',)
 
     def image(self, obj):
         return mark_safe('<img src="{}" style="width:100px height:auto;">'.format(obj.img.url))
-
 
 admin.site.register(CustomUser,CustomUserAdmin)
 admin.site.register(Category, CategoryAdmin)
