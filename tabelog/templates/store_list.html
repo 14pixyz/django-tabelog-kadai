@@ -46,8 +46,9 @@
             <td>{{ store.budget }}円</td>
             <td>{{ store.tel }}</td>
             {% if store.image %}
-                <td><img src="{{ store.image.url }}" style="width:100px height:auto;"></td>
+                <td><img src="{{ store.image.url }}" style="width:100px; height:auto;"></td>
             {% endif %}
+            <td><a href="{% url 'tabelog:store-detail' store.pk %}">詳細</a></td>
         </tr>
         {% endfor %}
     </table>
