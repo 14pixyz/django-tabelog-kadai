@@ -4,17 +4,28 @@
 
 <!DOCTYPE html>
 <html>
-<head></head>
+<head>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
 <body>
     {% block content %}
     <h1>店舗一覧</h1>
 
-    <div class="data-organization">
-        <form class="d-flex" action="{% url 'tabelog:store-list' %}" method="get">
-            <input name="q" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-primary" type="submit">Search</button>
-        </form>
-    </div>
+    <form method="get" id="filterForm">
+        <label for="q">検索:</label>
+        <input type="text" name="q" id="q" value="{{ q }}">
+        <button type="submit">検索</button>
+
+        <label for="sort_by">ソート:</label>
+        <select name="sort_by" id="sort_by" onchange="document.getElementById('filterForm').submit();">
+            <option value="name" {% if sort_by == "name" %}selected{% endif %}>名前（昇順）</option>
+            <option value="-name" {% if sort_by == "-name" %}selected{% endif %}>名前（降順）</option>
+            <option value="budget" {% if sort_by == "budget" %}selected{% endif %}> 予算金額が安い順</option>
+            <option value="-budget" {% if sort_by == "-budget" %}selected{% endif %}>予算金額が高い順</option>
+        </select>
+    </form>
 
     <table class="table table-striped table-hover table-bordered">
         <thead>

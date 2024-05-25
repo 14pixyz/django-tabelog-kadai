@@ -4,7 +4,3 @@ header{
     display:flex;  /*ロゴとulを横に並べる*/
     justify-content:space-between;  /*両端に配置*/
 }
-
-#data-organization {
-    background-color: aquamarine;
-}

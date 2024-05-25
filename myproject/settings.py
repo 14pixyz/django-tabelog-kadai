@@ -65,7 +65,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'myproject.urls'
 
 # staticファイルのパスを追加
-STATIC_URL = '/static/'
+STATIC_URL = '/static/css/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
