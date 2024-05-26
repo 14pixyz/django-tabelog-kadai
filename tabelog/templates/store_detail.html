@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    {% block content %}
+    <h1>詳細画面</h1>
+    <div>{{ store.name }}</div>
+    <div>{{ store.adress }}</div>
+    <div>{{ store.opening_hours }}〜{{ store.close_hours }}</div>
+    <div>{{ store.budget }}円</div>
+    <div>{{ store.tel }}</div>
+    {% if store.image %}
+        <div><img src="{{ store.image.url }}" style="width:100px; height:auto;"></div>
+    {% endif %}
+
+    <a href="{% url 'tabelog:store-list' %}">一覧画面へ戻る</a>
+    {% endblock %}
+</body>
+</html>
