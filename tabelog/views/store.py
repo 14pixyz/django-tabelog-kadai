@@ -28,8 +28,9 @@ class StoreListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['top_query'] = self.request.GET.get('top_query', '')
+        context['store_name'] = self.request.GET.get('store_name', '')
         context['sort_by'] = self.request.GET.get('sort_by', '')
-        context['q'] = self.request.GET.get('q', '')
         context['select_category'] = self.request.GET.get('category')
         context['categorys'] = Category.objects.all()
         return context
