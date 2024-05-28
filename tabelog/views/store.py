@@ -1,5 +1,5 @@
 from django.views.generic import ListView, DetailView
-from tabelog.models import Store, Category
+from tabelog.models import Store, Category, Review
 
 
 class StoreListView(ListView):
@@ -39,3 +39,8 @@ class StoreListView(ListView):
 class StoreDetailView(DetailView):
     template_name = 'store_detail.html'
     model = Store
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['reviews'] = Review.objects.all()
+        return context

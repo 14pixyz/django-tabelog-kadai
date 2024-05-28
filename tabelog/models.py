@@ -2,6 +2,8 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
+from django.core.validators import MaxValueValidator, MinValueValidator
+
 
 
 class UserType(models.TextChoices):
@@ -36,6 +38,7 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    id = models.AutoField(primary_key=True, unique=True)
     username = models.CharField(max_length=150)
     email = models.EmailField(verbose_name='メールアドレス', unique=True)
     first_name = models.CharField(verbose_name='姓', max_length=20)
@@ -91,3 +94,14 @@ class Store(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Review(models.Model):
+    id = models.AutoField(primary_key=True, unique=True)
+    content = models.TextField(blank=True, null=True)
+    star = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], blank=True, null=True)
+    create_datetime = models.DateTimeField(auto_now_add=True)
+    update_datetime = models.DateTimeField(auto_now=True)
+    user_id = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
+    store_id = models.ForeignKey(Store, on_delete=models.PROTECT)
+    is_publish = models.BooleanField(default=True)

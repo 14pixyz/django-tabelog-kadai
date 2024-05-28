@@ -20,6 +20,19 @@
     {% if store.image %}
         <div><img src="{{ store.image.url }}" style="width:100px; height:auto;"></div>
     {% endif %}
+    <br>
+
+    {% for review in reviews %}
+
+            <p>{{ store.id }}</p>
+            <p>{{ review.store_id }}</p>
+            <p>-------------------------------------</p>
+            <div>{{ review.create_datetime }}</div>
+            <div>評価数：{{ review.star }}</div>
+            <div>内容：{{ review.content }}</div>
+            <p>-------------------------------------</p>
+            <br>
+    {% endfor %}
 
     <a href="{% url 'tabelog:store-list' %}">一覧画面へ戻る</a>
     {% endblock %}
