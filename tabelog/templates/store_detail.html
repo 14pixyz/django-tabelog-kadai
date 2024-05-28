@@ -23,7 +23,7 @@
     <br>
 
     {% for review in reviews %}
-        {% if {{ review.store_id }} == {{ store.id }} %}
+        {% if review.store_id == store.id %}
             <p>-------------------------------------</p>
             <div>{{ review.create_datetime }}</div>
             <div>評価数：{{ review.star }}</div>
