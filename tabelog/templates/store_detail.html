@@ -23,15 +23,14 @@
     <br>
 
     {% for review in reviews %}
-
-            <p>{{ store.id }}</p>
-            <p>{{ review.store_id }}</p>
+        {% if {{ review.store_id }} == {{ store.id }} %}
             <p>-------------------------------------</p>
             <div>{{ review.create_datetime }}</div>
             <div>評価数：{{ review.star }}</div>
             <div>内容：{{ review.content }}</div>
             <p>-------------------------------------</p>
             <br>
+        {% endif %}
     {% endfor %}
 
     <a href="{% url 'tabelog:store-list' %}">一覧画面へ戻る</a>
