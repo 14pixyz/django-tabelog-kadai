@@ -1,6 +1,7 @@
 from django.views.generic import ListView, DetailView
 from tabelog.models import Store, Category, Review
 
+from django.views.generic.edit import CreateView
 
 class StoreListView(ListView):
     template_name = 'store_list.html'
@@ -44,3 +45,16 @@ class StoreDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['reviews'] = Review.objects.all()
         return context
+
+
+class ReviewCreateView(CreateView):
+    template_name = 'review_form.html'
+    model = Review
+    fields = ("content", "star", "store")
+
+    def form_valid(self, form):
+        # ユーザーを投稿者として保存できるようにする
+        object = form.save(commit=False)
+        object.user = self.request.user
+        object.save()
+        return super().form_valid(form)
