@@ -16,7 +16,9 @@ urlpatterns = [
     path('subscription/cancel/', credit.SubscriptionCancelView.as_view(), name='subscription-cancel'),
 
     path('store/list/', store.StoreListView.as_view(), name='store-list'),
-    path('store/detail/<int:pk>/', store.StoreDetailView.as_view(), name='store-detail')
+    path('store/detail/<int:pk>/', store.StoreDetailView.as_view(), name='store-detail'),
+
+    path('review/form/',store.ReviewCreateView.as_view(), name='review-form'),
 ]
 
 if settings.DEBUG:
