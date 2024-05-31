@@ -1,6 +1,5 @@
 from django.views.generic import ListView, DetailView
 from tabelog.models import Store, Category, Review
-
 from django.views.generic.edit import CreateView
 
 class StoreListView(ListView):
@@ -48,7 +47,7 @@ class StoreDetailView(DetailView):
 
 
 class ReviewCreateView(CreateView):
-    template_name = 'review_form.html'
+    template_name = 'review_new_form.html'
     model = Review
     fields = ("content", "star", "store")
 
