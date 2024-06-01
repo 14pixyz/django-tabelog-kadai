@@ -23,19 +23,17 @@
     <br>
 
     {% for review in reviews %}
-        {% if review.store.id == store.id %}
-            <p>-------------------------------------</p>
-            <div>投稿日時：{{ review.create_datetime }}</div>
-            <div>評価数：{{ review.star }}</div>
-            <div>内容：{{ review.content }}</div>
-            <a href="">レビューを編集する</a>
-            <p>-------------------------------------</p>
-            <br>
-        {% endif %}
+        <p>-------------------------------------</p>
+        <div>投稿日時：{{ review.create_datetime }}</div>
+        <div>評価数：{{ review.star }}</div>
+        <div>内容：{{ review.content }}</div>
+        <a href="{% url 'tabelog:review-edit-form' review.id %}">レビューを編集する</a>
+        <p>-------------------------------------</p>
+        <br>
     {% endfor %}
 
 
-    <a href="{% url 'tabelog:review-form' %}">レビューを投稿する</a><br>
+    <a href="{% url 'tabelog:review-new-form' store.pk %}">レビューを投稿する</a><br>
 
 
     <a href="{% url 'tabelog:store-list' %}">一覧画面へ戻る</a>

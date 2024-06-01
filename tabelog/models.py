@@ -3,8 +3,8 @@ from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.urls import reverse
 
+from django.shortcuts import reverse
 
 
 class UserType(models.TextChoices):
@@ -106,6 +106,3 @@ class Review(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
     store = models.ForeignKey(Store, on_delete=models.PROTECT)
     is_publish = models.BooleanField(default=True)
-
-    def get_absolute_url(self):
-            return reverse('tabelog:store-list')
