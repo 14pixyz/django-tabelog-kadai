@@ -87,7 +87,7 @@ class ReviewEditView(UserPassesTestMixin, UpdateView):
     raise_exception = False
     login_url = reverse_lazy('tabelog:home')
 
-    template_name = 'review_new_form.html'
+    template_name = 'review_edit_form.html'
     model = Review
     fields = ("content", "star")
 

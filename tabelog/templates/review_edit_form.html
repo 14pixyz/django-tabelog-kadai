@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+    {% block content %}
+    <h1>レビュー投稿</h1>
+    <form method='POST'>
+      {% csrf_token %}
+      {{ form }}
+      <button name="btn_submit" type="submit">更新する</button>
+    </form>
+    {% endblock %}
+</body>
+</html>
