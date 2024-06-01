@@ -18,7 +18,8 @@ urlpatterns = [
     path('store/list/', store.StoreListView.as_view(), name='store-list'),
     path('store/detail/<int:pk>/', store.StoreDetailView.as_view(), name='store-detail'),
 
-    path('review/new/',store.ReviewCreateView.as_view(), name='review-new-form'),
+    path('review/new/store/<int:store_id>/',store.ReviewCreateView.as_view(), name='review-new-form'),
+    path('review/edit/<int:pk>/',store.ReviewEditView.as_view(), name='review-edit-form'),
 ]
 
 if settings.DEBUG:

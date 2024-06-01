@@ -1,6 +1,10 @@
 from django.views.generic import ListView, DetailView
 from tabelog.models import Store, Category, Review
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
+
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.shortcuts import redirect
 
 class StoreListView(ListView):
     template_name = 'store_list.html'
@@ -42,18 +46,50 @@ class StoreDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['reviews'] = Review.objects.all()
+        context['reviews'] = Review.objects.filter(store__id=self.kwargs['pk'])
         return context
 
 
-class ReviewCreateView(CreateView):
+class ReviewCreateView(UserPassesTestMixin, CreateView):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_paid
+
+    def handle_no_permission(self):
+        return redirect('tabelog:home')
+
+    raise_exception = False
+    login_url = reverse_lazy('tabelog:home')
+
     template_name = 'review_new_form.html'
     model = Review
-    fields = ("content", "star", "store")
+    fields = ("content", "star")
 
     def form_valid(self, form):
-        # ユーザーを投稿者として保存できるようにする
+        # ユーザー情報を保存できるようにする
         object = form.save(commit=False)
         object.user = self.request.user
+        object.store_id = self.kwargs['store_id']
         object.save()
         return super().form_valid(form)
+
+    def get_success_url(self) -> str:
+        return reverse_lazy('tabelog:store-detail', kwargs={'pk': self.kwargs['store_id']})
+
+
+class ReviewEditView(UserPassesTestMixin, UpdateView):
+    def test_func(self):
+        review = Review.objects.get(id=self.kwargs['pk'])
+        return self.request.user.is_authenticated and self.request.user.is_paid and review.user.id == self.request.user.id
+
+    def handle_no_permission(self):
+        return redirect('tabelog:home')
+
+    raise_exception = False
+    login_url = reverse_lazy('tabelog:home')
+
+    template_name = 'review_new_form.html'
+    model = Review
+    fields = ("content", "star")
+
+    def get_success_url(self) -> str:
+        return reverse_lazy('tabelog:store-detail', kwargs={'pk': self.object.store.id})

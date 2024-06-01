@@ -106,7 +106,3 @@ class Review(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
     store = models.ForeignKey(Store, on_delete=models.PROTECT)
     is_publish = models.BooleanField(default=True)
-
-    def get_absolute_url(self):
-        # ここにstoreidを取ってくるようにする
-        return reverse('tabelog:store-detail', kwargs={'pk' : self.pk})
