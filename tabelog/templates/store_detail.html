@@ -22,6 +22,10 @@
     {% endif %}
     <br>
 
+    <a href="{% url 'tabelog:reservation-new-form' store.pk %}">予約する</a><br>
+
+
+    <!-- 有料会員のみレビュー投稿のリンクが表示されるようにする -->
     {% for review in reviews %}
         <p>-------------------------------------</p>
         <div>投稿日時：{{ review.create_datetime }}</div>
