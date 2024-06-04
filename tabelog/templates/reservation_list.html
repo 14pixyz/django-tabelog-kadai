@@ -22,7 +22,7 @@
         </thead>
         {% for reservation in reservations %}
         <tr>
-            <td>{{ reservation.store.name }}</td>
+            <td>{{ reservation.id }}/{{ reservation.store.name }}</td>
             <td>{{ reservation.date }} / {{ reservation.time }}</td>
             <td>{{ reservation.people }}人</td>
             <td>

@@ -1,6 +1,6 @@
-from django.views.generic import ListView, DetailView, View
+from django.views.generic import ListView, DetailView
 from tabelog.models import Store, Category, Review, Reservation
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -144,25 +144,19 @@ class ReservationListView(UserPassesTestMixin, ListView):
         return context
 
 
-class ReservationCancelView(UserPassesTestMixin, View):
+class ReservationDeleteView(UserPassesTestMixin, DeleteView):
     def test_func(self):
         return self.request.user.is_authenticated and self.request.user.is_paid
 
     def handle_no_permission(self):
         return redirect('tabelog:home')
 
-    def get(self, request):
-        return render(request, 'reservation_cancel.html')
+    template_name = 'reservation_confirm_delete.html'
+    model = Reservation
+    success_url = reverse_lazy('tabelog:reservation-list')
 
-    def post(self):
-        reservation = Reservation.objects.get(id=self.kwargs['pk']) #？　2024-06-03 07:29:59
-
-        reservation.date = None
-        reservation.time = None
-        reservation.people = None
-        reservation.save()
-
-        return redirect('tabelog:reservation-list')
-
-    raise_exception = False
-    login_url = reverse_lazy('tabelog:home')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['reservation'] = self.get_object()
+        print(context)
+        return context

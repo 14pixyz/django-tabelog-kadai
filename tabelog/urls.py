@@ -23,7 +23,7 @@ urlpatterns = [
 
     path('reservation/new/store/<int:store_id>/',store.ReservationCreateView.as_view(), name='reservation-new-form'),
     path('reservation/list/',store.ReservationListView.as_view(), name='reservation-list'),
-    path('reservation/cancel/<int:pk>/',store.ReservationCancelView.as_view(), name='reservation-cancel'), #? 2024-06-03 07:30:30
+    path('reservation/cancel/<int:pk>/',store.ReservationDeleteView.as_view(), name='reservation-cancel'),
 ]
 
 if settings.DEBUG:
