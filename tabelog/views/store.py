@@ -1,10 +1,10 @@
 from django.views.generic import ListView, DetailView
-from tabelog.models import Store, Category, Review
-from django.views.generic.edit import CreateView, UpdateView
+from tabelog.models import Store, Category, Review, Reservation
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 
 class StoreListView(ListView):
     template_name = 'store_list.html'
@@ -51,6 +51,7 @@ class StoreDetailView(DetailView):
 
 
 class ReviewCreateView(UserPassesTestMixin, CreateView):
+    # ユーザーの種類を判定している
     def test_func(self):
         return self.request.user.is_authenticated and self.request.user.is_paid
 
@@ -64,8 +65,8 @@ class ReviewCreateView(UserPassesTestMixin, CreateView):
     model = Review
     fields = ("content", "star")
 
+    # フォーム保存時の動作
     def form_valid(self, form):
-        # ユーザー情報を保存できるようにする
         object = form.save(commit=False)
         object.user = self.request.user
         object.store_id = self.kwargs['store_id']
@@ -78,6 +79,7 @@ class ReviewCreateView(UserPassesTestMixin, CreateView):
 
 class ReviewEditView(UserPassesTestMixin, UpdateView):
     def test_func(self):
+        # レビューIDを取得して、紐づいているユーザーIDと現在アクセスしているユーザーのIDが一致するかを確認している。
         review = Review.objects.get(id=self.kwargs['pk'])
         return self.request.user.is_authenticated and self.request.user.is_paid and review.user.id == self.request.user.id
 
@@ -93,3 +95,68 @@ class ReviewEditView(UserPassesTestMixin, UpdateView):
 
     def get_success_url(self) -> str:
         return reverse_lazy('tabelog:store-detail', kwargs={'pk': self.object.store.id})
+
+
+class ReservationCreateView(UserPassesTestMixin, CreateView):
+    # ユーザーの種類を判定している
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_paid
+
+    def handle_no_permission(self):
+        return redirect('tabelog:home')
+
+    raise_exception = False
+    login_url = reverse_lazy('tabelog:home')
+
+    template_name = 'reservation_new_form.html'
+    model = Reservation
+    fields = ("date", "time", "people")
+
+    # フォーム保存時の動作
+    def form_valid(self, form):
+        object = form.save(commit=False)
+        object.user = self.request.user
+        object.store_id = self.kwargs['store_id']
+        object.save()
+        return super().form_valid(form)
+
+    def get_success_url(self) -> str:
+        return reverse_lazy('tabelog:store-detail', kwargs={'pk': self.kwargs['store_id']})
+
+
+class ReservationListView(UserPassesTestMixin, ListView):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_paid
+
+    def handle_no_permission(self):
+        return redirect('tabelog:home')
+
+    raise_exception = False
+    login_url = reverse_lazy('tabelog:home')
+
+    template_name = 'reservation_list.html'
+    model = Reservation
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['reservations'] = Reservation.objects.all()
+        return context
+
+
+class ReservationDeleteView(UserPassesTestMixin, DeleteView):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_paid
+
+    def handle_no_permission(self):
+        return redirect('tabelog:home')
+
+    template_name = 'reservation_confirm_delete.html'
+    model = Reservation
+    success_url = reverse_lazy('tabelog:reservation-list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['reservation'] = self.get_object()
+        print(context)
+        return context

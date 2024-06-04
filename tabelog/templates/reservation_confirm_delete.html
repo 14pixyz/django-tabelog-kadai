@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+{% block content %}
+    <h1 class="center">予約キャンセル</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <p>キャンセルしてよろしいですか？</p>
+        <p>店舗名：{{ reservation.store.name }}</p>
+        <p>予約時間：{{ reservation.date }} / {{ reservation.time }}</p>
+        <p>予約人数：{{ reservation.people }}人</p>
+        <button type="submit" class="btn btn-danger">はい</button>
+        <button type="submit" class="btn btn-primary">戻る</button>
+    </form>
+
+{% endblock %}
+
+</body>
+</html>

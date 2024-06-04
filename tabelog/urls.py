@@ -20,6 +20,10 @@ urlpatterns = [
 
     path('review/new/store/<int:store_id>/',store.ReviewCreateView.as_view(), name='review-new-form'),
     path('review/edit/<int:pk>/',store.ReviewEditView.as_view(), name='review-edit-form'),
+
+    path('reservation/new/store/<int:store_id>/',store.ReservationCreateView.as_view(), name='reservation-new-form'),
+    path('reservation/list/',store.ReservationListView.as_view(), name='reservation-list'),
+    path('reservation/cancel/<int:pk>/',store.ReservationDeleteView.as_view(), name='reservation-cancel'),
 ]
 
 if settings.DEBUG:

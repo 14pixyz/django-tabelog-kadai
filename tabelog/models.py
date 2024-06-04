@@ -105,4 +105,15 @@ class Review(models.Model):
     update_datetime = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
     store = models.ForeignKey(Store, on_delete=models.PROTECT)
-    is_publish = models.BooleanField(default=True)
+    is_publish = models.BooleanField(default=True) #非公開設定の実装が未
+
+
+class Reservation(models.Model):
+    id = models.AutoField(primary_key=True, unique=True)
+    date = models.DateField(blank=False, null=False)
+    time = models.TimeField(blank=False, null=False)
+    people = models.IntegerField(blank=False, null=False)
+    create_datetime = models.DateTimeField(auto_now_add=True)
+    update_datetime = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
+    store = models.ForeignKey(Store, on_delete=models.PROTECT)
