@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser, Category, Store, Review, Reservation
+from .models import CustomUser, Category, Store, Review, Reservation, Favarit
 from django.utils.safestring import mark_safe
 
 class CustomUserAdmin(admin.ModelAdmin):
@@ -27,9 +27,13 @@ class ReviewAdmin(admin.ModelAdmin):
 class ReservationAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'store' , 'date', 'time')
 
+class FavaritAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'store' , 'create_datetime')
+
 
 admin.site.register(CustomUser,CustomUserAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Store, StoreAdmin)
 admin.site.register(Review, ReviewAdmin)
 admin.site.register(Reservation, ReservationAdmin)
+admin.site.register(Favarit, FavaritAdmin)

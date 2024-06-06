@@ -1,10 +1,15 @@
 from django.views.generic import ListView, DetailView
-from tabelog.models import Store, Category, Review, Reservation
+from tabelog.models import Store, Category, Review, Reservation, Favarit
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
+
+from django.http import JsonResponse  # 追加
+from django.shortcuts import get_object_or_404  # 追加
+
+
 
 class StoreListView(ListView):
     template_name = 'store_list.html'
@@ -158,5 +163,29 @@ class ReservationDeleteView(UserPassesTestMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['reservation'] = self.get_object()
-        print(context)
         return context
+
+
+class FavaritCreateView(UserPassesTestMixin, CreateView):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_paid
+
+    def handle_no_permission(self):
+        return redirect('tabelog:home')
+
+    template_name = 'store_detail.html'
+    model = Favarit
+    fields = ("id", "store", "user", "create_datetime")
+
+    # フォーム保存時の動作
+    def form_valid(self, form):
+        object = form.save(commit=False)
+        object.user = self.request.user
+        object.store_id = self.kwargs['store_id']
+        object.save()
+        return super().form_valid(form)
+
+    def get_success_url(self) -> str:
+        return reverse_lazy('tabelog:store-detail', kwargs={'pk': self.kwargs['store_id']})
+
+

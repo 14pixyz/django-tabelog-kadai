@@ -22,6 +22,17 @@
     {% endif %}
     <br>
 
+    <form id="favarit-form" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="お気に入り登録">
+    </form>
+
+    <p>お気に入り登録済み</p>
+    <p>お気に入り未登録</p>
+    <a href="">お気に入り登録</a><br>
+    <a href="">お気に入り解除</a><br>
+    <br>
     <a href="{% url 'tabelog:reservation-new-form' store.pk %}">予約する</a><br>
 
 
