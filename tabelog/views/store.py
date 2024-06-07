@@ -1,10 +1,15 @@
 from django.views.generic import ListView, DetailView
-from tabelog.models import Store, Category, Review, Reservation
+from tabelog.models import Store, Category, Review, Reservation, Favarit
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
+
+from django.http import JsonResponse  # 追加
+from django.shortcuts import get_object_or_404  # 追加
+
+
 
 class StoreListView(ListView):
     template_name = 'store_list.html'
@@ -47,6 +52,7 @@ class StoreDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['reviews'] = Review.objects.filter(store__id=self.kwargs['pk'])
+        context['is_favarit'] = Favarit.objects.filter(store__id=self.kwargs['pk'], user__id=self.request.user.id).exists
         return context
 
 
@@ -158,5 +164,30 @@ class ReservationDeleteView(UserPassesTestMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['reservation'] = self.get_object()
-        print(context)
         return context
+
+
+# お気に入り
+class FavaritCreateView(UserPassesTestMixin, CreateView):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_paid
+
+    def handle_no_permission(self):
+        return redirect('tabelog:home')
+
+    # フォーム保存時の動作
+    def post(self, request, *args, **kwargs):
+        Favarit.objects.create(user_id=request.user.id, store_id=kwargs['store_id'])
+        return redirect('tabelog:store-detail', kwargs['store_id'])
+
+
+class FavaritDeleteView(UserPassesTestMixin, CreateView):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_paid
+
+    def handle_no_permission(self):
+        return redirect('tabelog:home')
+
+    def post(self, request, *args, **kwargs):
+        Favarit.objects.filter(user_id=request.user.id, store_id=kwargs['store_id']).delete()
+        return redirect('tabelog:store-detail', kwargs['store_id'])
