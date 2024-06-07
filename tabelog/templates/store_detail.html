@@ -22,18 +22,20 @@
     {% endif %}
     <br>
 
-    <form id="favarit-form" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="お気に入り登録">
-    </form>
-
-    <p>お気に入り登録済み</p>
-    <p>お気に入り未登録</p>
-    <a href="">お気に入り登録</a><br>
-    <a href="">お気に入り解除</a><br>
-    <br>
-    <a href="{% url 'tabelog:reservation-new-form' store.pk %}">予約する</a><br>
+    {% if user.is_authenticated and user.is_paid %}
+        {% if is_favarit %}
+        <form id="favarit-form" method="post" action="{% url 'tabelog:favarit-delete' store.id %}">
+            {% csrf_token %}
+            <button>お気に入り解除</button>
+        </form>
+        {% else %}
+        <form id="favarit-form" method="post" action="{% url 'tabelog:favarit-create' store.id %}">
+            {% csrf_token %}
+            <button>お気に入り</button>
+        </form>
+        {% endif %}
+        <a href="{% url 'tabelog:reservation-new-form' store.pk %}">予約する</a><br>
+    {% endif %}
 
 
     <!-- 有料会員のみレビュー投稿のリンクが表示されるようにする -->

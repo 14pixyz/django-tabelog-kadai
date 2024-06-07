@@ -119,6 +119,7 @@ class Reservation(models.Model):
     store = models.ForeignKey(Store, on_delete=models.PROTECT)
 
 
+# お気に入り
 class Favarit(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
     create_datetime = models.DateTimeField(auto_now_add=True)

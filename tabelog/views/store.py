@@ -52,6 +52,7 @@ class StoreDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['reviews'] = Review.objects.filter(store__id=self.kwargs['pk'])
+        context['is_favarit'] = Favarit.objects.filter(store__id=self.kwargs['pk'], user__id=self.request.user.id).exists
         return context
 
 
@@ -166,6 +167,7 @@ class ReservationDeleteView(UserPassesTestMixin, DeleteView):
         return context
 
 
+# お気に入り
 class FavaritCreateView(UserPassesTestMixin, CreateView):
     def test_func(self):
         return self.request.user.is_authenticated and self.request.user.is_paid
@@ -173,19 +175,19 @@ class FavaritCreateView(UserPassesTestMixin, CreateView):
     def handle_no_permission(self):
         return redirect('tabelog:home')
 
-    template_name = 'store_detail.html'
-    model = Favarit
-    fields = ("id", "store", "user", "create_datetime")
-
     # フォーム保存時の動作
-    def form_valid(self, form):
-        object = form.save(commit=False)
-        object.user = self.request.user
-        object.store_id = self.kwargs['store_id']
-        object.save()
-        return super().form_valid(form)
-
-    def get_success_url(self) -> str:
-        return reverse_lazy('tabelog:store-detail', kwargs={'pk': self.kwargs['store_id']})
+    def post(self, request, *args, **kwargs):
+        Favarit.objects.create(user_id=request.user.id, store_id=kwargs['store_id'])
+        return redirect('tabelog:store-detail', kwargs['store_id'])
 
 
+class FavaritDeleteView(UserPassesTestMixin, CreateView):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_paid
+
+    def handle_no_permission(self):
+        return redirect('tabelog:home')
+
+    def post(self, request, *args, **kwargs):
+        Favarit.objects.filter(user_id=request.user.id, store_id=kwargs['store_id']).delete()
+        return redirect('tabelog:store-detail', kwargs['store_id'])

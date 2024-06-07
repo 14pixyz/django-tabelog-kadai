@@ -24,6 +24,9 @@ urlpatterns = [
     path('reservation/new/store/<int:store_id>/',store.ReservationCreateView.as_view(), name='reservation-new-form'),
     path('reservation/list/',store.ReservationListView.as_view(), name='reservation-list'),
     path('reservation/cancel/<int:pk>/',store.ReservationDeleteView.as_view(), name='reservation-cancel'),
+
+    path('favarit/create/store/<int:store_id>/', store.FavaritCreateView.as_view(), name='favarit-create'),
+    path('favarit/delete/store/<int:store_id>/', store.FavaritDeleteView.as_view(), name='favarit-delete'),
 ]
 
 if settings.DEBUG:
