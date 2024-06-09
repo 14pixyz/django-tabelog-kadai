@@ -27,6 +27,7 @@ urlpatterns = [
 
     path('favarit/create/store/<int:store_id>/', store.FavaritCreateView.as_view(), name='favarit-create'),
     path('favarit/delete/store/<int:store_id>/', store.FavaritDeleteView.as_view(), name='favarit-delete'),
+    path('favarit/list/', store.FavaritListView.as_view(), name='favarit-list'),
 ]
 
 if settings.DEBUG:
