@@ -4,6 +4,16 @@
 
 {% block content %}
     <h1>会員メニュー</h1>
+
+    <h3>会員情報</h3>
+    <div>ユーザー名：{{ customuser.username }}</div>
+    <div>メールアドレス：{{ customuser.email }}</div>
+    <div>会員種別：{{ customuser.user_type }}</div> <!--日本語表記にしたい-->
+    <br>
+
+    <a href="{% url 'tabelog:member-edit-form' customuser.pk %}">ユーザー名の変更</a><br>
+    <a href="{% url 'tabelog:email-edit-form' customuser.pk %}">メールアドレスの変更</a><br>
+
     {% if user.is_authenticated and user.is_paid %}
         <a href="{% url 'tabelog:credit-update' %}">クレジットカード変更</a><br>
         <a href="{% url 'tabelog:subscription-cancel' %}">有料会員解約</a><br>

@@ -6,10 +6,6 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import redirect
 
-from django.http import JsonResponse  # 追加
-from django.shortcuts import get_object_or_404  # 追加
-
-
 
 class StoreListView(ListView):
     template_name = 'store_list.html'

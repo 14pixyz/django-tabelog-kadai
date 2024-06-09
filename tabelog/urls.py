@@ -9,7 +9,10 @@ app_name = 'tabelog'
 
 urlpatterns = [
     path('home/', home.HomeView.as_view(), name='home'),
-    path('member/', home.MemberView.as_view(), name='member-menu'),
+    path('member/<int:pk>/', home.MemberView.as_view(), name='member-menu'),
+    path('member/edit/<int:pk>/', home.MemberEditView.as_view(), name='member-edit-form'),
+    path('member/edit/email/<int:pk>/', home.EmailEditView.as_view(), name='email-edit-form'),
+
 
     path('credit/register/', credit.CreditRegisterView.as_view(), name='credit-register'),
     path('credit/update/', credit.CreditUpdateView.as_view(), name='credit-update'),

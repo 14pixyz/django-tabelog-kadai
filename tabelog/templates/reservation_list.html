@@ -26,8 +26,8 @@
             <td>{{ reservation.date }} / {{ reservation.time }}</td>
             <td>{{ reservation.people }}人</td>
             <td>
-              <button onclick="location.href='{% url 'tabelog:store-detail' reservation.store.pk %}'">店舗ページへ</button>
-              <button onclick="location.href='{% url 'tabelog:reservation-cancel' reservation.id %}'">予約キャンセル</button>
+                <button onclick="location.href='{% url 'tabelog:store-detail' reservation.store.pk %}'">店舗ページへ</button>
+                <button onclick="location.href='{% url 'tabelog:reservation-cancel' reservation.id %}'">予約キャンセル</button>
             </td>
         </tr>
         {% endfor %}
