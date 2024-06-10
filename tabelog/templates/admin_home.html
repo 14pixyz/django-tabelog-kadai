@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}管理者メニュー{% endblock %}
+</head>
+
+<body>
+    {% block content %}
+        <h1>管理者メニュー</h1>
+        <p><a href="">会員一覧</a></p>
+        <p><a href="{% url 'tabelog:admin-store-list' %}">店舗一覧</a></p>
+        <p><a href="">カテゴリ一覧</a></p>
+        <p><a href="">レビュー一覧</a></p>
+        <p><a href="">売上管理</a></p>
+    {% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    {% block content %}
+    <h1>詳細画面</h1>
+    <div>{{ store.name }}</div>
+    <div>{{ store.adress }}</div>
+    <div>{{ store.opening_hours }}〜{{ store.close_hours }}</div>
+    <div>{{ store.budget }}円</div>
+    <div>{{ store.tel }}</div>
+    {% if store.image %}
+        <div><img src="{{ store.image.url }}" style="width:100px; height:auto;"></div>
+    {% endif %}
+    <br>
+
+    {% if user.is_authenticated and user.is_paid %}
+        <a href="{% url 'tabelog:admin-store-edit-form' store.pk %}">店舗情報を編集する</a><br>
+    {% endif %}
+
+
+    {% for review in reviews %}
+        {% if review.is_publish %}
+            <p>-------------------------------------</p>
+            <div>投稿日時：{{ review.create_datetime }}</div>
+            <div>評価数：{{ review.star }}</div>
+            <div>内容：{{ review.content }}</div>
+            {% if user.is_authenticated and user.is_supporter %}
+                <a href="{% url 'tabelog:review-edit-form' review.id %}">レビューを編集する</a>
+            {% endif %}
+            <p>-------------------------------------</p>
+            <br>
+        {% endif %}
+    {% endfor %}
+
+
+    <a href="{% url 'tabelog:admin-store-list' %}">一覧画面へ戻る</a>
+    {% endblock %}
+</body>
+</html>
