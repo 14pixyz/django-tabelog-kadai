@@ -21,7 +21,9 @@
         {% for favarit in favarits %}
         <tr>
             <td>{{ favarit.store.name }}</td>
-            <td>{{ favarit.store.image }}</td>
+            {% if favarit.store.image %}
+                <td><img src="{{ favarit.store.image.url }}" style="width:100px; height:auto;"></td>
+            {% endif %}
             <td>
                 <button onclick="location.href='{% url 'tabelog:store-detail' favarit.store.pk %}'">店舗ページへ</button>
             </td>
