@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'admin_base.html' %}
 {% load django_bootstrap5 %}
 {% load static %}
 
@@ -13,7 +13,7 @@
 <body>
     {% block content %}
         <h1>管理者メニュー</h1>
-        <p><a href="">会員一覧</a></p>
+        <p><a href="{% url 'tabelog:admin-user-list' %}">会員一覧</a></p>
         <p><a href="{% url 'tabelog:admin-store-list' %}">店舗一覧</a></p>
         <p><a href="">カテゴリ一覧</a></p>
         <p><a href="">レビュー一覧</a></p>

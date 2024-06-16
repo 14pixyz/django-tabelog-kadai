@@ -1,5 +1,5 @@
 from django.views.generic import TemplateView, ListView, DetailView, UpdateView
-from tabelog.models import Store, Category, Review
+from tabelog.models import Store, Category, Review, CustomUser
 from django.urls import reverse_lazy
 from ..forms import StoreForm
 
@@ -58,3 +58,21 @@ class StoreEditView(UpdateView):
         return reverse_lazy('tabelog:admin-store-detail', kwargs={'pk': self.object.id})
 
 
+class UserListView(ListView):
+    template_name = 'admin_user_list.html'
+    model = CustomUser
+    paginate_by = 10
+
+    def get_queryset(self, **kwargs):
+        queryset = super().get_queryset(**kwargs)
+        query = self.request.GET
+
+        # フィルタリング
+        if user_email := query.get('user_email'):
+            queryset = queryset.filter(email__icontains=user_email)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_email'] = self.request.GET.get('user_email', '')
+        return context
