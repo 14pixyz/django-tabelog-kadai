@@ -1,7 +1,7 @@
-from django.views.generic import TemplateView, ListView, DetailView, UpdateView
+from django.views.generic import TemplateView, ListView, DetailView, UpdateView, CreateView, DeleteView
 from tabelog.models import Store, Category, Review, CustomUser
 from django.urls import reverse_lazy
-from ..forms import StoreForm
+from ..forms import StoreForm, CategoryForm
 
 class HomeView(TemplateView):
     template_name = 'admin_home.html'
@@ -76,3 +76,47 @@ class UserListView(ListView):
         context = super().get_context_data(**kwargs)
         context['user_email'] = self.request.GET.get('user_email', '')
         return context
+
+
+class CategoryListView(ListView):
+    template_name = 'admin_category_list.html'
+    model = Category
+    paginate_by = 10
+
+    def get_queryset(self, **kwargs):
+        queryset = super().get_queryset(**kwargs)
+        query = self.request.GET
+
+        # フィルタリング
+        if category := query.get('category'):
+            queryset = queryset.filter(name__icontains=category)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category'] = self.request.GET.get('category', '')
+        return context
+
+
+class CategoryEditView(UpdateView):
+    template_name = 'admin_category_edit_form.html'
+    model = Category
+    form_class = CategoryForm
+
+    def get_success_url(self) -> str:
+        return reverse_lazy('tabelog:admin-category-list')
+
+
+class CategoryNewView(CreateView):
+    template_name = 'admin_category_new_form.html'
+    model = Category
+    form_class = CategoryForm
+
+    def get_success_url(self) -> str:
+        return reverse_lazy('tabelog:admin-category-list')
+
+
+class CategoryDeleteView(DeleteView):
+    template_name = 'admin_category_confirm_delete.html'
+    model = Category
+    success_url = reverse_lazy('tabelog:admin-category-list')

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Store
+from .models import Store, Category
 
 class StoreForm(forms.ModelForm):
     class Meta:
@@ -14,4 +14,12 @@ class StoreForm(forms.ModelForm):
             'tel': '電話番号',
             'image': '画像',
             'category': 'カテゴリー',
+        }
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ["name"]
+        labels = {
+            'name': 'カテゴリ名',
         }

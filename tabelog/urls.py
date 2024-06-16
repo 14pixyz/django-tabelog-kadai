@@ -47,6 +47,12 @@ urlpatterns = [
 
     # 会員
     path('ad/user/list/', adminmenu.UserListView.as_view(), name='admin-user-list'),
+
+    # カテゴリ
+    path('ad/category/list/', adminmenu.CategoryListView.as_view(), name='admin-category-list'),
+    path('ad/category/new/', adminmenu.CategoryNewView.as_view(), name='admin-category-new-form'),
+    path('ad/category/edit/<int:pk>/', adminmenu.CategoryEditView.as_view(), name='admin-category-edit-form'),
+    path('ad/category/delete/<int:pk>/', adminmenu.CategoryDeleteView.as_view(), name='admin-category-delete-form'),
 ]
 
 if settings.DEBUG:

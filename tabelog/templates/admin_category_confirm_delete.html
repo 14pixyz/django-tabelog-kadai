@@ -1,0 +1,27 @@
+{% extends 'admin_base.html' %}
+{% load django_bootstrap5 %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+{% block content %}
+    <h1 class="center">削除画面</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <p>削除してよろしいですか？</p>
+        <p>カテゴリ名：{{ category.name }}</p>
+        <button type="submit" class="btn btn-danger">はい</button>
+        <button type="submit" class="btn btn-primary">戻る</button>
+    </form>
+
+{% endblock %}
+
+</body>
+</html>
