@@ -3,6 +3,9 @@ from tabelog.models import Store, Category, Review, CustomUser
 from django.urls import reverse_lazy
 from ..forms import StoreForm, CategoryForm
 from django.contrib.auth.views import LoginView
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.shortcuts import redirect
+
 
 
 class SupporterLoginView(LoginView):
@@ -16,11 +19,28 @@ class SupporterLoginView(LoginView):
             return reverse_lazy('tabelog:home')
 
 
-class HomeView(TemplateView):
+class HomeView(UserPassesTestMixin, TemplateView):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_supporter
+
+    def handle_no_permission(self):
+        return redirect('tabelog:home')
+
+    raise_exception = False
+    login_url = reverse_lazy('tabelog:home')
     template_name = 'admin_home.html'
 
 
-class StoreListView(ListView):
+class StoreListView(UserPassesTestMixin, ListView):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_supporter
+
+    def handle_no_permission(self):
+        return redirect('tabelog:home')
+
+    raise_exception = False
+    login_url = reverse_lazy('tabelog:home')
+
     template_name = 'admin_store_list.html'
     model = Store
     paginate_by = 10
@@ -51,7 +71,16 @@ class StoreListView(ListView):
         return context
 
 
-class StoreDetailView(DetailView):
+class StoreDetailView(UserPassesTestMixin, DetailView):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_supporter
+
+    def handle_no_permission(self):
+        return redirect('tabelog:home')
+
+    raise_exception = False
+    login_url = reverse_lazy('tabelog:home')
+
     template_name = 'admin_store_detail.html'
     model = Store
 
@@ -62,7 +91,16 @@ class StoreDetailView(DetailView):
         return context
 
 
-class StoreEditView(UpdateView):
+class StoreEditView(UserPassesTestMixin, UpdateView):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_supporter
+
+    def handle_no_permission(self):
+        return redirect('tabelog:home')
+
+    raise_exception = False
+    login_url = reverse_lazy('tabelog:home')
+
     template_name = 'admin_store_edit_form.html'
     model = Store
     form_class = StoreForm
@@ -71,7 +109,16 @@ class StoreEditView(UpdateView):
         return reverse_lazy('tabelog:admin-store-detail', kwargs={'pk': self.object.id})
 
 
-class UserListView(ListView):
+class UserListView(UserPassesTestMixin, ListView):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_supporter
+
+    def handle_no_permission(self):
+        return redirect('tabelog:home')
+
+    raise_exception = False
+    login_url = reverse_lazy('tabelog:home')
+
     template_name = 'admin_user_list.html'
     model = CustomUser
     paginate_by = 10
@@ -91,7 +138,16 @@ class UserListView(ListView):
         return context
 
 
-class CategoryListView(ListView):
+class CategoryListView(UserPassesTestMixin, ListView):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_supporter
+
+    def handle_no_permission(self):
+        return redirect('tabelog:home')
+
+    raise_exception = False
+    login_url = reverse_lazy('tabelog:home')
+
     template_name = 'admin_category_list.html'
     model = Category
     paginate_by = 10
@@ -111,7 +167,16 @@ class CategoryListView(ListView):
         return context
 
 
-class CategoryEditView(UpdateView):
+class CategoryEditView(UserPassesTestMixin, UpdateView):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_supporter
+
+    def handle_no_permission(self):
+        return redirect('tabelog:home')
+
+    raise_exception = False
+    login_url = reverse_lazy('tabelog:home')
+
     template_name = 'admin_category_edit_form.html'
     model = Category
     form_class = CategoryForm
@@ -120,7 +185,16 @@ class CategoryEditView(UpdateView):
         return reverse_lazy('tabelog:admin-category-list')
 
 
-class CategoryNewView(CreateView):
+class CategoryNewView(UserPassesTestMixin, CreateView):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_supporter
+
+    def handle_no_permission(self):
+        return redirect('tabelog:home')
+
+    raise_exception = False
+    login_url = reverse_lazy('tabelog:home')
+
     template_name = 'admin_category_new_form.html'
     model = Category
     form_class = CategoryForm
@@ -129,7 +203,16 @@ class CategoryNewView(CreateView):
         return reverse_lazy('tabelog:admin-category-list')
 
 
-class CategoryDeleteView(DeleteView):
+class CategoryDeleteView(UserPassesTestMixin, DeleteView):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_supporter
+
+    def handle_no_permission(self):
+        return redirect('tabelog:home')
+
+    raise_exception = False
+    login_url = reverse_lazy('tabelog:home')
+
     template_name = 'admin_category_confirm_delete.html'
     model = Category
     success_url = reverse_lazy('tabelog:admin-category-list')
