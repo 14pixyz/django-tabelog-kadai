@@ -38,6 +38,7 @@ urlpatterns = [
     path('favarit/list/', store.FavaritListView.as_view(), name='favarit-list'),
 
     # 管理者画面
+    path('supporter/login/', adminmenu.SupporterLoginView.as_view(), name='ad-login'),
     path('ad/home/', adminmenu.HomeView.as_view(), name='admin-home'),
 
     # 店舗

@@ -2,6 +2,19 @@ from django.views.generic import TemplateView, ListView, DetailView, UpdateView,
 from tabelog.models import Store, Category, Review, CustomUser
 from django.urls import reverse_lazy
 from ..forms import StoreForm, CategoryForm
+from django.contrib.auth.views import LoginView
+
+
+class SupporterLoginView(LoginView):
+    template_name = 'supporter/login.html'
+    success_url = reverse_lazy('tabelog:admin-home')
+
+    def get_success_url(self):
+        if self.request.user.is_supporter:
+            return reverse_lazy('tabelog:admin-home')
+        else:
+            return reverse_lazy('tabelog:home')
+
 
 class HomeView(TemplateView):
     template_name = 'admin_home.html'
