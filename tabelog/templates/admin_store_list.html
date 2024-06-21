@@ -58,6 +58,8 @@
         <button type="submit">ソート</button>
     </form>
 
+    <a class="btn btn-success" href="{% url 'tabelog:admin-store-new-form' %}" role="button">新規登録</a>
+
     <table class="table table-striped table-hover table-bordered">
         <thead>
             <tr>
@@ -79,7 +81,10 @@
             {% if store.image %}
                 <td><img src="{{ store.image.url }}" style="width:100px; height:auto;"></td>
             {% endif %}
-            <td><a href="{% url 'tabelog:admin-store-detail' store.pk %}">詳細</a></td>
+            <td>
+                <a class="btn btn-primary" href="{% url 'tabelog:admin-store-edit-form' store.pk %}" role="button">編集</a>
+                <a class="btn btn-danger" href="{% url 'tabelog:admin-store-delete-form' store.pk %}" role="button">削除</a>
+            </td>
         </tr>
         {% endfor %}
     </table>

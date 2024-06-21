@@ -22,10 +22,7 @@
     {% endif %}
     <br>
 
-    {% if user.is_authenticated and user.is_supporter %}
-        <a href="{% url 'tabelog:admin-store-edit-form' store.pk %}">店舗情報を編集する</a><br>
-    {% endif %}
-
+    <p><a href="{% url 'tabelog:admin-store-edit-form' store.pk %}">店舗情報の編集</a></p>
 
     {% for review in reviews %}
         {% if review.is_publish %}
@@ -33,9 +30,9 @@
             <div>投稿日時：{{ review.create_datetime }}</div>
             <div>評価数：{{ review.star }}</div>
             <div>内容：{{ review.content }}</div>
-            {% if user.is_authenticated and user.is_supporter %}
+            <!-- {% if user.is_authenticated and user.is_supporter %}
                 <a href="{% url 'tabelog:review-edit-form' review.id %}">レビューを編集する</a>
-            {% endif %}
+            {% endif %} -->
             <p>-------------------------------------</p>
             <br>
         {% endif %}

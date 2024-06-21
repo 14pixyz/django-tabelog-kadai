@@ -9,10 +9,10 @@ class HomeView(TemplateView):
     template_name = 'home.html'
 
 
-class MemberView(UserPassesTestMixin,DetailView):
+class MemberView(UserPassesTestMixin, DetailView):
     # ユーザーの種類を判定している
     def test_func(self):
-        return self.request.user.is_authenticated
+        return self.request.user.is_authenticated and int(self.request.user.id) == self.kwargs['pk']
 
     def handle_no_permission(self):
         return redirect('tabelog:home')

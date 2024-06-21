@@ -39,7 +39,7 @@
             <td>{{ category.create_datetime }}</td>
             <td>
                 <a class="btn btn-primary" href="{% url 'tabelog:admin-category-edit-form' category.pk %}" role="button">編集</a>
-                <a class="btn btn-denger" href="{% url 'tabelog:admin-category-delete-form' category.pk %}" role="button">削除</a>
+                <a class="btn btn-danger" href="{% url 'tabelog:admin-category-delete-form' category.pk %}" role="button">削除</a>
             </td>
         </tr>
         {% endfor %}

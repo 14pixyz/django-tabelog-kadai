@@ -43,8 +43,9 @@ urlpatterns = [
 
     # 店舗
     path('ad/store/list/', adminmenu.StoreListView.as_view(), name='admin-store-list'),
-    path('ad/store/detail/<int:pk>/', adminmenu.StoreDetailView.as_view(), name='admin-store-detail'),
+    path('ad/store/new/', adminmenu.StoreNewView.as_view(), name='admin-store-new-form'),
     path('ad/store/edit/<int:pk>/', adminmenu.StoreEditView.as_view(), name='admin-store-edit-form'),
+    path('ad/store/delete/<int:pk>/', adminmenu.StoreDeleteView.as_view(), name='admin-store-delete-form'),
 
     # 会員
     path('ad/user/list/', adminmenu.UserListView.as_view(), name='admin-user-list'),
