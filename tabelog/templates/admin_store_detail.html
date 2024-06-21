@@ -22,7 +22,7 @@
     {% endif %}
     <br>
 
-    {% if user.is_authenticated and user.is_paid %}
+    {% if user.is_authenticated and user.is_supporter %}
         <a href="{% url 'tabelog:admin-store-edit-form' store.pk %}">店舗情報を編集する</a><br>
     {% endif %}
 
