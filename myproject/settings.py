@@ -14,6 +14,8 @@ from pathlib import Path
 import os
 import environ
 
+from decouple import config
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -46,6 +48,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'cloudinary_storage',
+    'cloudinary',
+
     'tabelog',
 
     'allauth',
@@ -57,6 +62,9 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -100,12 +108,11 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+if DEBUG:
+    DATABASE_URL = 'sqlite:///' + str(BASE_DIR / 'db.sqlite3')
+    DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
+else:
+    DATABASES = {'default': dj_database_url.config(conn_max_age=600, ssl_require=True)}
 
 
 # Password validation
@@ -142,14 +149,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = 'static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, 'static'),
 )
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 # 画像の設定
+# cloudinary
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media_local'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': env('CLOUD_NAME'),
+    'API_KEY': env('CLOUDINARY_API_KEY'),
+    'API_SECRET': env('CLOUDINARY_API_SECRET')
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -165,12 +181,22 @@ ACCOUNT_USERNAME_REQUIRED = False  # サインナップ、ログイン時のユ�
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # サインアップにメールアドレス確認を使用
 ACCOUNT_EMAIL_REQUIRED = True
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # ローカルでの開発のためメールをコンソールで表示する
-
 LOGIN_REDIRECT_URL = 'tabelog:home'  # ログイン成功後の遷移先の指定
 ACCOUNT_LOGOUT_REDIRECT_URL = 'tabelog:home'  # ログアウト成功後の遷移先の指定
 
 ACCOUNT_LOGOUT_ON_GET = True  # 確認を行わずログアウトする設定
+
+
+# メール送信設定
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = env('EMAIL_HOST')
+    EMAIL_PORT = env('EMAIL_PORT')
+    EMAIL_USE_TLS = True
+    EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
 
 # stripe
