@@ -56,6 +56,3 @@ urlpatterns = [
     path('ad/category/edit/<int:pk>/', adminmenu.CategoryEditView.as_view(), name='admin-category-edit-form'),
     path('ad/category/delete/<int:pk>/', adminmenu.CategoryDeleteView.as_view(), name='admin-category-delete-form'),
 ]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

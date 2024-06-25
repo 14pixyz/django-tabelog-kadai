@@ -7,6 +7,18 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import redirect
 
 
+class BasePaidPermission(UserPassesTestMixin):
+    # ユーザーの種類を判定している
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_paid
+
+    def handle_no_permission(self):
+        return redirect('tabelog:home')
+
+    raise_exception = False
+    login_url = reverse_lazy('tabelog:home')
+
+
 class StoreListView(ListView):
     template_name = 'store_list.html'
     model = Store
@@ -100,17 +112,7 @@ class ReviewEditView(UserPassesTestMixin, UpdateView):
         return reverse_lazy('tabelog:store-detail', kwargs={'pk': self.object.store.id})
 
 
-class ReservationCreateView(UserPassesTestMixin, CreateView):
-    # ユーザーの種類を判定している
-    def test_func(self):
-        return self.request.user.is_authenticated and self.request.user.is_paid
-
-    def handle_no_permission(self):
-        return redirect('tabelog:home')
-
-    raise_exception = False
-    login_url = reverse_lazy('tabelog:home')
-
+class ReservationCreateView(BasePaidPermission, CreateView):
     template_name = 'reservation_new_form.html'
     model = Reservation
     fields = ("date", "time", "people")
