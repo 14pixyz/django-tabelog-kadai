@@ -30,9 +30,6 @@
             <div>投稿日時：{{ review.create_datetime }}</div>
             <div>評価数：{{ review.star }}</div>
             <div>内容：{{ review.content }}</div>
-            <!-- {% if user.is_authenticated and user.is_supporter %}
-                <a href="{% url 'tabelog:review-edit-form' review.id %}">レビューを編集する</a>
-            {% endif %} -->
             <p>-------------------------------------</p>
             <br>
         {% endif %}

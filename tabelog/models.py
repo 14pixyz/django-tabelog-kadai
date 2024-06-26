@@ -105,7 +105,7 @@ class Review(models.Model):
     update_datetime = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
     store = models.ForeignKey(Store, on_delete=models.PROTECT)
-    is_publish = models.BooleanField(default=True) #非公開設定の実装が未
+    is_publish = models.BooleanField(default=True)
 
 
 class Reservation(models.Model):

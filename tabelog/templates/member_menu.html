@@ -8,7 +8,7 @@
     <h3>会員情報</h3>
     <div>ユーザー名：{{ customuser.username }}</div>
     <div>メールアドレス：{{ customuser.email }}</div>
-    <div>会員種別：{{ customuser.user_type }}</div> <!--日本語表記にしたい-->
+    <div>会員種別：{{ customuser.user_type }}</div>
     <br>
 
     <a href="{% url 'tabelog:member-edit-form' customuser.pk %}">ユーザー名の変更</a><br>
