@@ -5,9 +5,6 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 
 
-class HomeView(TemplateView):
-    template_name = 'home.html'
-
 
 class MemberView(UserPassesTestMixin, DetailView):
     # ユーザーの種類を判定している

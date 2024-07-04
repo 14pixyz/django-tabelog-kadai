@@ -3,11 +3,12 @@
 {% load static %}
 
 {% block content %}
+<div class="container">
     <h1 class="center">クレジット変更</h1>
     <p>カードブランド： {{ card_brand }}</p>
     <p>カード番号： **** **** **** {{ card_last4 }}</p>
 
-    <div style="width: 600px; margin: auto;">
+    <div style="width: 600px;">
         <form action="{% url 'tabelog:credit-update' %}" method="POST" id="payment-form">
             {% csrf_token %}
             <div class="form-row">
@@ -22,9 +23,12 @@
                 <div id="card-errors" role="alert"></div>
             </div>
 
-            <button>お支払い</button>
+            <br>
+            <button class="btn btn-primary">お支払い</button>
+            <a href="javascript:history.back()" class="text-secondary">戻る</a>
         </form>
     </div>
+</div>
 
     <script src="https://js.stripe.com/v3/"></script>
     <script>

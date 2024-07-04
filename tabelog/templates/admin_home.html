@@ -2,23 +2,13 @@
 {% load django_bootstrap5 %}
 {% load static %}
 
+{% block title %}管理者メニュー{% endblock %}
 
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    {% block title %}管理者メニュー{% endblock %}
-</head>
-
-<body>
-    {% block content %}
-        <h1>管理者メニュー</h1>
-        <p><a href="{% url 'tabelog:admin-user-list' %}">会員一覧</a></p>
-        <p><a href="{% url 'tabelog:admin-store-list' %}">店舗一覧</a></p>
-        <p><a href="{% url 'tabelog:admin-category-list' %}">カテゴリ一覧</a></p>
-        <p><a href="">レビュー一覧</a></p>
-        <p><a href="">売上管理</a></p>
-    {% endblock %}
-</body>
-
-</html>
+{% block content %}
+    <h1>管理者メニュー</h1>
+    <div class="ms-3 mt-5">
+        <button onclick="location.href='{% url 'tabelog:admin-user-list' %}'" class="btn btn-primary ms-3">会員一覧</button>
+        <button onclick="location.href='{% url 'tabelog:admin-store-list' %}'" class="btn btn-primary ms-3">店舗一覧</button>
+        <button onclick="location.href='{% url 'tabelog:admin-category-list' %}'" class="btn btn-primary ms-3">カテゴリ一覧</button>
+    </div>
+{% endblock %}

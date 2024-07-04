@@ -1,34 +1,26 @@
 {% extends 'admin_base.html' %}
-{% load django_bootstrap5 %}
+{% load bootstrap %}
 {% load static %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-
-<body>
 {% block content %}
-    <h1 class="center">削除画面</h1>
+    <h1 class="center">店舗情報の削除</h1>
     <form method="POST">
         {% csrf_token %}
-        <p>削除してよろしいですか？</p>
-        <div>店舗名：{{ store.name }}</div>
-        <div>住所：{{ store.adress }}</div>
-        <div>営業時間：{{ store.opening_hours }}〜{{ store.close_hours }}</div>
-        <div>予算目安：{{ store.budget }}円</div>
-        <div>連絡先：{{ store.tel }}</div>
-        {% if store.image %}
-            <div><img src="{{ store.image.url }}" style="width:100px; height:auto;"></div>
-        {% endif %}
+        <div class="card" style="width: 30rem;">
+            {% if store.image %}
+                <img src="{{ store.image.url }}" class="card-img-top" style="width:100px; height:auto;">
+            {% endif %}
+            <div class="card-body">
+                <h3 class="card-title text-danger">削除してよろしいですか？</h3><br>
+                <p class="card-text">店舗名：{{ store.name }}</p>
+                <p class="card-text">住所：{{ store.adress }}</p>
+                <p class="card-text">営業時間：{{ store.opening_hours }}〜{{ store.close_hours }}</p>
+                <p class="card-text">予算目安：{{ store.budget }}円</p>
+                <p class="card-text">連絡先：{{ store.tel }}</p>
+            </div>
+        </div>
+        <br>
         <button type="submit" class="btn btn-danger">はい</button>
-        <button type="submit" class="btn btn-primary">戻る</button>
+        <a href="javascript:history.back()" class="text-secondary">戻る</a>
     </form>
-
 {% endblock %}
-
-</body>
-</html>

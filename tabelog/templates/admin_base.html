@@ -11,33 +11,23 @@
     {% bootstrap_javascript %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<header>
-    {% block header %}
-        <h1 id="site_name">NagoyaMESHI(管理者)</h1>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{% url 'tabelog:admin-home' %}">ホーム</a>
-                        </li>
-                        {% if user.is_authenticated %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'account_logout' %}">ログアウト</a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'account_login' %}">ログイン</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    {% endblock %}
-</header>
 <body>
-    {% block content %}
-    {% endblock %}
+    <div class="container">
+        <header class="d-flex flex-wrap justify-content-center py-2 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                <span class="fs-4">NagoyaMESHI（管理者画面）</span>
+            </a>
+
+        <ul class="nav nav-pills">
+            <li><a href="{% url 'tabelog:admin-home' %}" class="nav-link">ホーム</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'account_logout' %}" class="nav-link">ログアウト</a></li>
+            {% else %}
+                <li><a href="{% url 'account_login' %}" class="nav-link">ログイン</a></li>
+            {% endif %}
+        </ul>
+        </header>
+        {% block content %}{% endblock %}
+    </div>
 </body>
 </html>

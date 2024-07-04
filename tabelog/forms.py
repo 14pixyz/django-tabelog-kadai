@@ -1,5 +1,7 @@
 from django import forms
-from .models import Store, Category
+from .models import Store, Category, Reservation, Review
+
+import datetime
 
 class StoreForm(forms.ModelForm):
     class Meta:
@@ -22,4 +24,35 @@ class CategoryForm(forms.ModelForm):
         fields = ["name"]
         labels = {
             'name': 'カテゴリ名',
+        }
+
+
+class ReservationForm(forms.ModelForm):
+    class Meta:
+        model = Reservation
+        fields = ["date", "time", "people"]
+        labels = {
+            'date': '予約日',
+            'time': '予約時間',
+            'people': '予約人数',
+        }
+
+    def clean_date(self):
+        date = self.cleaned_data['date']
+        # ここの条件を今日の日付より以前の場合にする
+
+        dt = datetime.date.today()  # ローカルな現在の日付と時刻を取得
+
+        if dt > date:
+            raise forms.ValidationError('過去の日付は入力することはできません。')
+        return date
+
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ["star", "content"]
+        labels = {
+            'star': '評価',
+            'content': 'レビュー',
         }

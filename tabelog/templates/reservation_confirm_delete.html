@@ -2,28 +2,20 @@
 {% load django_bootstrap5 %}
 {% load static %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-
-<body>
 {% block content %}
     <h1 class="center">予約キャンセル</h1>
     <form method="POST">
         {% csrf_token %}
-        <p>キャンセルしてよろしいですか？</p>
-        <p>店舗名：{{ reservation.store.name }}</p>
-        <p>予約時間：{{ reservation.date }} / {{ reservation.time }}</p>
-        <p>予約人数：{{ reservation.people }}人</p>
+        <div class="card" style="width: 30rem;">
+            <div class="card-body">
+                <h3 class="card-title text-danger">キャンセルしてよろしいですか？</h3><br>
+                <p class="card-text">店舗名：{{ reservation.store.name }}</p>
+                <p class="card-text">予約時間：{{ reservation.date }}  {{ reservation.time }}</p>
+                <p class="card-text">予約人数：{{ reservation.people }}人</p>
+            </div>
+        </div>
+        <br>
         <button type="submit" class="btn btn-danger">はい</button>
-        <button type="submit" class="btn btn-primary">戻る</button>
+        <a href="javascript:history.back()" class="text-secondary">戻る</a>
     </form>
-
 {% endblock %}
-
-</body>
-</html>

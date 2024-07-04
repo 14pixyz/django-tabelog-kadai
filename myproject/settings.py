@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
 
     'django_bootstrap5',
+    'bootstrapform',
 ]
 
 MIDDLEWARE = [
@@ -181,8 +182,8 @@ ACCOUNT_USERNAME_REQUIRED = False  # サインナップ、ログイン時のユ�
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # サインアップにメールアドレス確認を使用
 ACCOUNT_EMAIL_REQUIRED = True
 
-LOGIN_REDIRECT_URL = 'tabelog:home'  # ログイン成功後の遷移先の指定
-ACCOUNT_LOGOUT_REDIRECT_URL = 'tabelog:home'  # ログアウト成功後の遷移先の指定
+LOGIN_REDIRECT_URL = 'tabelog:store-list'  # ログイン成功後の遷移先の指定
+ACCOUNT_LOGOUT_REDIRECT_URL = 'tabelog:store-list'  # ログアウト成功後の遷移先の指定
 
 ACCOUNT_LOGOUT_ON_GET = True  # 確認を行わずログアウトする設定
 

@@ -2,15 +2,7 @@
 {% load django_bootstrap5 %}
 {% load static %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    {% block content %}
+{% block content %}
     <h1>予約一覧</h1>
     <table class="table table-striped table-hover table-bordered">
         <thead>
@@ -22,12 +14,12 @@
         </thead>
         {% for reservation in reservations %}
         <tr>
-            <td>{{ reservation.id }}/{{ reservation.store.name }}</td>
-            <td>{{ reservation.date }} / {{ reservation.time }}</td>
+            <td>{{ reservation.store.name }}</td>
+            <td>{{ reservation.date }}   {{ reservation.time }}</td>
             <td>{{ reservation.people }}人</td>
             <td>
-                <button onclick="location.href='{% url 'tabelog:store-detail' reservation.store.pk %}'">店舗ページへ</button>
-                <button onclick="location.href='{% url 'tabelog:reservation-cancel' reservation.id %}'">予約キャンセル</button>
+                <button class="btn btn-primary" onclick="location.href='{% url 'tabelog:store-detail' reservation.store.pk %}'">店舗ページへ</button>
+                <button class="btn btn-danger" onclick="location.href='{% url 'tabelog:reservation-cancel' reservation.id %}'">予約キャンセル</button>
             </td>
         </tr>
         {% endfor %}
@@ -46,7 +38,6 @@
     <a href="?page={{ page_obj.next_page_number }}">次へ</a>
     <a href="?page={{ page_obj.paginator.num_pages }}">最後 &raquo;</a>
     {% endif %}
-    <a href="{% url 'tabelog:home' %}">戻る</a>
-    {% endblock %}
-</body>
-</html>
+    <br>
+    <a class="text-secondary" href="{% url 'tabelog:store-list' %}">戻る</a>
+{% endblock %}
