@@ -2,59 +2,54 @@
 {% load django_bootstrap5 %}
 {% load static %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    {% block content %}
+{% block content %}
     <h1>詳細画面</h1>
-    <div>{{ store.name }}</div>
-    <div>{{ store.adress }}</div>
-    <div>{{ store.opening_hours }}〜{{ store.close_hours }}</div>
-    <div>{{ store.budget }}円</div>
-    <div>{{ store.tel }}</div>
-    {% if store.image %}
-        <div><img src="{{ store.image.url }}" style="width:100px; height:auto;"></div>
-    {% endif %}
+    <div class="card" style="width: 30rem;">
+        <img src="{{ store.image.url }}" class="card-img-top">
+        <div class="card-body">
+            <h4 class="card-title">店舗詳細</h4><br>
+            <p class="card-text">店舗名：{{ store.name }}</p>
+            <p class="card-text">住所：{{ store.adress }}</p>
+            <p class="card-text">営業時間：{{ store.opening_hours }}〜{{ store.close_hours }}</p>
+            <p class="card-text">予算：{{ store.budget }}</p>
+            <p class="card-text">連絡先：{{ store.tel }}</p>
+        </div>
+    </div>
     <br>
 
-    {% if user.is_authenticated and user.is_paid %}
-        {% if is_favarit %}
-        <form id="favarit-form" method="post" action="{% url 'tabelog:favarit-delete' store.id %}">
-            {% csrf_token %}
-            <button>お気に入り解除</button>
-        </form>
-        {% else %}
-        <form id="favarit-form" method="post" action="{% url 'tabelog:favarit-create' store.id %}">
-            {% csrf_token %}
-            <button>お気に入り</button>
-        </form>
+    <div class="d-flex flex-row mb-3">
+        {% if user.is_authenticated and user.is_paid %}
+            {% if is_favarit %}
+            <form id="favarit-form" method="post" action="{% url 'tabelog:favarit-delete' store.id %}">
+                {% csrf_token %}
+                <button class="btn btn-primary">お気に入り解除</button>
+            </form>
+            {% else %}
+            <form id="favarit-form" method="post" action="{% url 'tabelog:favarit-create' store.id %}">
+                {% csrf_token %}
+                <button class="btn btn-primary">お気に入り登録</button>
+            </form>
+            {% endif %}
+            <button onclick="location.href='{% url 'tabelog:reservation-new-form' store.pk %}'" class="btn btn-primary ms-3">予約する</button>
+            <button onclick="location.href='{% url 'tabelog:review-new-form' store.pk %}'" class="btn btn-primary ms-3">レビュー投稿</button>
         {% endif %}
-        <a href="{% url 'tabelog:reservation-new-form' store.pk %}">予約する</a><br>
-        <a href="{% url 'tabelog:review-new-form' store.pk %}">レビューを投稿する</a>
-    {% endif %}
+    </div>
 
 
     {% for review in reviews %}
         {% if review.is_publish %}
-            <p>-------------------------------------</p>
-            <div>投稿日時：{{ review.create_datetime }}</div>
-            <div>評価数：{{ review.star }}</div>
-            <div>内容：{{ review.content }}</div>
-            {% if user.is_authenticated and user.is_paid and review.user.id == user.id %}
-                <a href="{% url 'tabelog:review-edit-form' review.id %}">レビューを編集する</a>
-            {% endif %}
-            <p>-------------------------------------</p>
-            <br>
+            <div class="card mb-2" style="width: 30rem;">
+                <div class="card-body">
+                    <p class="card-text">投稿日時：{{ review.create_datetime }}</p>
+                    <p class="card-text">評価数：{{ review.star }}</p>
+                    <p class="card-text">レビュー内容：{{ review.content }}</p>
+                    {% if user.is_authenticated and user.is_paid and review.user.id == user.id %}
+                        <button onclick=”location.href='{% url 'tabelog:review-edit-form' review.id %}'” class="btn btn-primary">レビューを編集する</button>
+                    {% endif %}
+                </div>
+            </div>
         {% endif %}
     {% endfor %}
 
-
-    <a href="{% url 'tabelog:store-list' %}">一覧画面へ戻る</a>
-    {% endblock %}
-</body>
-</html>
+    <a href="{% url 'tabelog:store-list' %}"  class="text-secondary">一覧画面へ戻る</a>
+{% endblock %}

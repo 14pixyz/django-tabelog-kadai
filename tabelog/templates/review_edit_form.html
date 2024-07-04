@@ -1,18 +1,28 @@
 {% extends 'base.html' %}
+{% load bootstrap %}
 {% load static %}
 
-<!DOCTYPE html>
-<html>
-<head>
-</head>
-<body>
-    {% block content %}
-    <h1>レビュー投稿</h1>
-    <form method='POST'>
-      {% csrf_token %}
-      {{ form }}
-      <button name="btn_submit" type="submit">更新する</button>
-    </form>
-    {% endblock %}
-</body>
-</html>
+{% block content %}
+<h1>レビューの編集</h1>
+<form method='POST'>
+  {% csrf_token %}
+  <div class="mb-4">
+      <label for="id_content" class="form-label">レビュー</label>
+      <textarea name="content" maxlength="200" required id="id_content" class="form-control"></textarea>
+  </div>
+  <div class="mb-4">
+      <label for="id_star" class="form-label">評価</label>
+      <select name = "star" required id="id_star" class="form-select">
+          <option value selected>--------</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+      </select>
+    </div>
+  <br>
+  <button name="btn_submit" type="submit" class="btn btn-primary">更新する</button>
+  <a href="javascript:history.back()" class="text-secondary">戻る</a>
+</form>
+{% endblock %}

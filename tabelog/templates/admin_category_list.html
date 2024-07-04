@@ -2,26 +2,21 @@
 {% load django_bootstrap5 %}
 {% load static %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    {% block content %}
+{% block content %}
     <h1>カテゴリ一覧</h1>
-
-    <a class="btn btn-success" href="{% url 'tabelog:admin-category-new-form' %}" role="button">新規登録</a>
-    <br>
 
     <!-- カテゴリ検索 -->
     <form method="get">
-        <label for="category">検索:</label>
-        <input type="text" name="category" id="category" value="{{ category }}">
-        <button type="submit">検索</button>
+        <div class="mb-3">
+                <label for="category" class="form-label">カテゴリー検索</label>
+                <div class="d-flex flex-row g-3">
+                    <input type="text" class="form-control-sm" id="category" name="category" value="{{ category }}">
+                    <button type="submit" class="btn btn-primary ms-1">検索</button>
+                </div>
+        </div>
     </form>
+
+    <a class="btn btn-success mt-3 mb-3" href="{% url 'tabelog:admin-category-new-form' %}" role="button">新規登録</a>
 
     <table class="table table-striped table-hover table-bordered">
         <thead>
@@ -59,7 +54,5 @@
     <a href="?page={{ page_obj.next_page_number }}">次へ</a>
     <a href="?page={{ page_obj.paginator.num_pages }}">最後 &raquo;</a>
     {% endif %}
-    <a href="{% url 'tabelog:admin-home' %}">戻る</a>
-    {% endblock %}
-</body>
-</html>
+    <a href="{% url 'tabelog:admin-home' %}"  class="text-secondary">戻る</a>
+{% endblock %}

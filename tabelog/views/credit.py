@@ -18,10 +18,10 @@ class CreditRegisterView(UserPassesTestMixin, View):
         return self.request.user.is_authenticated and self.request.user.is_free
 
     def handle_no_permission(self):
-        return redirect('tabelog:home')
+        return redirect('tabelog:store-list')
 
     raise_exception = False
-    login_url = reverse_lazy('tabelog:home')
+    login_url = reverse_lazy('tabelog:store-list')
 
     def get(self, request):
         ctx = {
@@ -54,7 +54,7 @@ class CreditRegisterView(UserPassesTestMixin, View):
         custom_user.user_type = UserType.PAID
         custom_user.save()
 
-        return redirect('tabelog:home')
+        return redirect('tabelog:store-list')
 
 
 class SubscriptionCancelView(UserPassesTestMixin, View):
@@ -62,7 +62,7 @@ class SubscriptionCancelView(UserPassesTestMixin, View):
         return self.request.user.is_authenticated and self.request.user.is_paid
 
     raise_exception = False
-    login_url = reverse_lazy('tabelog:home')
+    login_url = reverse_lazy('tabelog:store-list')
 
     def get(self, request):
         return render(request, 'paid_membership_cancel.html')
@@ -78,7 +78,7 @@ class SubscriptionCancelView(UserPassesTestMixin, View):
         custom_user.user_type = UserType.FREE
         custom_user.save()
 
-        return redirect('tabelog:home')
+        return redirect('tabelog:store-list')
 
 
 class CreditUpdateView(UserPassesTestMixin, View):
@@ -86,7 +86,7 @@ class CreditUpdateView(UserPassesTestMixin, View):
         return self.request.user.is_authenticated and self.request.user.is_paid
 
     raise_exception = False
-    login_url = reverse_lazy('tabelog:home')
+    login_url = reverse_lazy('tabelog:store-list')
 
     def get(self, request):
         email = self.request.user.email
@@ -120,6 +120,6 @@ class CreditUpdateView(UserPassesTestMixin, View):
         custom_user.stripe_card_id = card.id
         custom_user.save()
 
-        return redirect('tabelog:home')
+        return redirect('tabelog:store-list')
 
 

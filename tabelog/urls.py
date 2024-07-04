@@ -9,7 +9,6 @@ app_name = 'tabelog'
 
 urlpatterns = [
     # ホーム
-    path('home/', home.HomeView.as_view(), name='home'),
     path('member/<int:pk>/', home.MemberView.as_view(), name='member-menu'),
     path('member/edit/<int:pk>/', home.MemberEditView.as_view(), name='member-edit-form'),
     path('member/edit/email/<int:pk>/', home.EmailEditView.as_view(), name='email-edit-form'),
@@ -20,7 +19,7 @@ urlpatterns = [
     path('subscription/cancel/', credit.SubscriptionCancelView.as_view(), name='subscription-cancel'),
 
     # 店舗情報
-    path('store/list/', store.StoreListView.as_view(), name='store-list'),
+    path('', store.StoreListView.as_view(), name='store-list'),
     path('store/detail/<int:pk>/', store.StoreDetailView.as_view(), name='store-detail'),
 
     # レビュー
@@ -56,3 +55,4 @@ urlpatterns = [
     path('ad/category/edit/<int:pk>/', adminmenu.CategoryEditView.as_view(), name='admin-category-edit-form'),
     path('ad/category/delete/<int:pk>/', adminmenu.CategoryDeleteView.as_view(), name='admin-category-delete-form'),
 ]
+

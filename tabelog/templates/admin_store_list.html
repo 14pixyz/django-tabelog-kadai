@@ -13,52 +13,60 @@
     {% block content %}
     <h1>店舗一覧</h1>
 
-    <!-- 店舗名検索 -->
-    <form method="get">
-        <label for="store_name">検索:</label>
-        <input type="text" name="store_name" id="store_name" value="{{ store_name }}">
-        <button type="submit">検索</button>
-    </form>
+    <div class="d-flex flex-row">
+        <!-- 店舗名検索 -->
+        <form method="get">
+            <div class="mb-3">
+                    <label for="store_name" class="form-label">店舗名検索</label>
+                    <div class="d-flex flex-row g-3">
+                        <input type="text" class="form-control-sm" id="store_name" name="store_name" value="{{ store_name }}">
+                        <button type="submit" class="btn btn-primary ms-1">検索</button>
+                    </div>
+            </div>
+        </form>
 
-    <!-- カテゴリ検索 -->
-    <form method="get">
-        <label for="category">カテゴリ検索:</label>
-        <select name="category" id="category">
-            {% for category in categorys %}
-                <option value="{{ category.id }}" {% if select_category == "{{ category.id }}" %}selected{% endif %}>{{ category.name }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit">検索</button>
-    </form>
+        <!-- カテゴリ検索 -->
+        <form method="get">
+            <div class="mb-3 ms-5">
+                <label for="category" class="form-label">カテゴリ検索</label>
+                <div class="d-flex flex-row g-3">
+                    <select class="form-select-sm" id="category" name="category">
+                        <option selected></option>
+                        {% for category in categorys %}
+                            <option value="{{ category.id }}" {% if select_category == "{{ category.id }}" %}selected{% endif %}>{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-primary ms-1">検索</button>
+                </div>
+            </div>
+        </form>
 
-    <!-- ソート -->
-    <form method="get" >
-        <!-- フィルタリングパラメータを保持 -->
-        <div>
-            {% if 'top_query' in request.get_full_path %}
-                <input type="hidden" name="top_query" value="{{ top_query }}">
-            {% endif %}
-            {% if 'store_name' in request.get_full_path %}
-                <input type="hidden" name="store_name" value="{{ store_name }}">
-            {% endif %}
+        <!-- ソート -->
+        <form method="get" >
+            <div class="mb-3 ms-5">
+                <!-- フィルタリングパラメータを保持 -->
+                {% if 'store_name' in request.get_full_path %}
+                    <input type="hidden" name="store_name" value="{{ store_name }}">
+                {% endif %}
+                {% if 'category' in request.get_full_path %}
+                    <input type="hidden" name="category" value="{{ select_category }}">
+                {% endif %}
 
-            <!-- うまくいっていない -->
-            <!-- {% if 'category' in request.get_full_path %}
-                <input type="hidden" name="{{ category.id }}" value="{{ category }}">
-            {% endif %} -->
-        </div>
+                <label for="sort_by" class="form-label">並べ替え</label>
+                <div class="d-flex flex-row g-3">
+                    <select class="form-select-sm" id="sort_by" name="sort_by">
+                        <option value="name" {% if sort_by == "name" %}selected{% endif %}>名前（昇順）</option>
+                        <option value="-name" {% if sort_by == "-name" %}selected{% endif %}>名前（降順）</option>
+                        <option value="budget" {% if sort_by == "budget" %}selected{% endif %}> 予算金額が安い順</option>
+                        <option value="-budget" {% if sort_by == "-budget" %}selected{% endif %}>予算金額が高い順</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary ms-1">実行</button>
+                </div>
+            </div>
+        </form>
+    </div>
 
-        <label for="sort_by">ソート:</label>
-        <select name="sort_by" id="sort_by">
-            <option value="name" {% if sort_by == "name" %}selected{% endif %}>名前（昇順）</option>
-            <option value="-name" {% if sort_by == "-name" %}selected{% endif %}>名前（降順）</option>
-            <option value="budget" {% if sort_by == "budget" %}selected{% endif %}> 予算金額が安い順</option>
-            <option value="-budget" {% if sort_by == "-budget" %}selected{% endif %}>予算金額が高い順</option>
-        </select>
-        <button type="submit">ソート</button>
-    </form>
-
-    <a class="btn btn-success" href="{% url 'tabelog:admin-store-new-form' %}" role="button">新規登録</a>
+    <a class="btn btn-success mt-3 mb-3" href="{% url 'tabelog:admin-store-new-form' %}" role="button">新規登録</a>
 
     <table class="table table-striped table-hover table-bordered">
         <thead>
@@ -102,7 +110,6 @@
     <a href="?page={{ page_obj.next_page_number }}">次へ</a>
     <a href="?page={{ page_obj.paginator.num_pages }}">最後 &raquo;</a>
     {% endif %}
-    <a href="{% url 'tabelog:admin-home' %}">戻る</a>
-    {% endblock %}
-</body>
-</html>
+
+    <a href="{% url 'tabelog:admin-home' %}"  class="text-secondary">戻る</a>
+{% endblock %}

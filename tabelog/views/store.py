@@ -6,6 +6,8 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import redirect
 
+from ..forms import ReservationForm, ReviewForm
+
 
 class BasePaidPermission(UserPassesTestMixin):
     # ユーザーの種類を判定している
@@ -13,10 +15,10 @@ class BasePaidPermission(UserPassesTestMixin):
         return self.request.user.is_authenticated and self.request.user.is_paid
 
     def handle_no_permission(self):
-        return redirect('tabelog:home')
+        return redirect('tabelog:store-list')
 
     raise_exception = False
-    login_url = reverse_lazy('tabelog:home')
+    login_url = reverse_lazy('tabelog:store-list')
 
 
 class StoreListView(ListView):
@@ -28,9 +30,6 @@ class StoreListView(ListView):
         queryset = super().get_queryset(**kwargs)
         query = self.request.GET
 
-        # トップ画面からの検索
-        if top_query := query.get('top_query'):
-            queryset = queryset.filter(name__icontains=top_query).order_by('id')
         # フィルタリング
         if store_name := query.get('store_name'):
             queryset = queryset.filter(name__icontains=store_name).order_by('id')
@@ -71,14 +70,13 @@ class ReviewCreateView(UserPassesTestMixin, CreateView):
         return self.request.user.is_authenticated and self.request.user.is_paid
 
     def handle_no_permission(self):
-        return redirect('tabelog:home')
+        return redirect('tabelog:store-list')
 
     raise_exception = False
-    login_url = reverse_lazy('tabelog:home')
+    login_url = reverse_lazy('tabelog:store-list')
 
     template_name = 'review_new_form.html'
-    model = Review
-    fields = ("content", "star")
+    form_class = ReviewForm
 
     # フォーム保存時の動作
     def form_valid(self, form):
@@ -99,14 +97,20 @@ class ReviewEditView(UserPassesTestMixin, UpdateView):
         return self.request.user.is_authenticated and self.request.user.is_paid and review.user.id == self.request.user.id
 
     def handle_no_permission(self):
-        return redirect('tabelog:home')
+        return redirect('tabelog:store-list')
 
     raise_exception = False
-    login_url = reverse_lazy('tabelog:home')
+    login_url = reverse_lazy('tabelog:store-list')
 
     template_name = 'review_edit_form.html'
-    model = Review
-    fields = ("content", "star")
+    form_class = ReviewForm
+
+    def get_queryset(self):
+        return Review.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
     def get_success_url(self) -> str:
         return reverse_lazy('tabelog:store-detail', kwargs={'pk': self.object.store.id})
@@ -115,7 +119,7 @@ class ReviewEditView(UserPassesTestMixin, UpdateView):
 class ReservationCreateView(BasePaidPermission, CreateView):
     template_name = 'reservation_new_form.html'
     model = Reservation
-    fields = ("date", "time", "people")
+    form_class = ReservationForm
 
     # フォーム保存時の動作
     def form_valid(self, form):
@@ -134,10 +138,10 @@ class ReservationListView(UserPassesTestMixin, ListView):
         return self.request.user.is_authenticated and self.request.user.is_paid
 
     def handle_no_permission(self):
-        return redirect('tabelog:home')
+        return redirect('tabelog:store-list')
 
     raise_exception = False
-    login_url = reverse_lazy('tabelog:home')
+    login_url = reverse_lazy('tabelog:store-list')
 
     template_name = 'reservation_list.html'
     model = Reservation
@@ -154,7 +158,7 @@ class ReservationDeleteView(UserPassesTestMixin, DeleteView):
         return self.request.user.is_authenticated and self.request.user.is_paid
 
     def handle_no_permission(self):
-        return redirect('tabelog:home')
+        return redirect('tabelog:store-list')
 
     template_name = 'reservation_confirm_delete.html'
     model = Reservation
@@ -172,7 +176,7 @@ class FavaritCreateView(UserPassesTestMixin, CreateView):
         return self.request.user.is_authenticated and self.request.user.is_paid
 
     def handle_no_permission(self):
-        return redirect('tabelog:home')
+        return redirect('tabelog:store-list')
 
     # フォーム保存時の動作
     def post(self, request, *args, **kwargs):
@@ -185,7 +189,7 @@ class FavaritDeleteView(UserPassesTestMixin, CreateView):
         return self.request.user.is_authenticated and self.request.user.is_paid
 
     def handle_no_permission(self):
-        return redirect('tabelog:home')
+        return redirect('tabelog:store-list')
 
     def post(self, request,**kwargs):
         Favarit.objects.filter(user_id=request.user.id, store_id=kwargs['store_id']).delete()
@@ -197,13 +201,13 @@ class FavaritListView(UserPassesTestMixin, ListView):
         return self.request.user.is_authenticated and self.request.user.is_paid
 
     def handle_no_permission(self):
-        return redirect('tabelog:home')
+        return redirect('tabelog:store-list')
 
     raise_exception = False
-    login_url = reverse_lazy('tabelog:home')
+    login_url = reverse_lazy('tabelog:store-list')
 
     template_name = 'favarit_list.html'
-    model = Reservation
+    model = Favarit
     paginate_by = 10
 
     def get_context_data(self, **kwargs):

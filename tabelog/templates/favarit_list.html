@@ -2,16 +2,8 @@
 {% load django_bootstrap5 %}
 {% load static %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    {% block content %}
-    <h1>予約一覧</h1>
+{% block content %}
+    <h1>お気に入り一覧</h1>
     <table class="table table-striped table-hover table-bordered">
         <thead>
             <tr>
@@ -44,7 +36,5 @@
     <a href="?page={{ page_obj.next_page_number }}">次へ</a>
     <a href="?page={{ page_obj.paginator.num_pages }}">最後 &raquo;</a>
     {% endif %}
-    <a href="{% url 'tabelog:home' %}">戻る</a>
-    {% endblock %}
-</body>
-</html>
+    <a href="{% url 'tabelog:store-list' %}">戻る</a>
+{% endblock %}
