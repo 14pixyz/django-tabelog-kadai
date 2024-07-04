@@ -1,0 +1,35 @@
+{% load django_bootstrap5 %}
+{% load bootstrap %}
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header class="d-flex flex-wrap justify-content-center py-2 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                <span class="fs-4">NagoyaMESHI</span>
+            </a>
+
+        <ul class="nav nav-pills">
+            <li><a href="{% url 'tabelog:store-list' %}" class="nav-link">ホーム</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'tabelog:member-menu' user.pk %}" class="nav-link">会員メニュー</a></li>
+                <li><a href="{% url 'account_logout' %}" class="nav-link">ログアウト</a></li>
+            {% else %}
+                <li><a href="{% url 'account_login' %}" class="nav-link">ログイン</a></li>
+            {% endif %}
+        </ul>
+        </header>
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

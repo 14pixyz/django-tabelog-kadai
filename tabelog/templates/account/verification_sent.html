@@ -1,0 +1,18 @@
+{% extends "account/base.html" %}
+{% load django_bootstrap5 %}
+{% load bootstrap %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Verify Your E-mail Address" %}{% endblock %}
+
+{% block content %}
+    <h1>{% trans "Verify Your E-mail Address" %}</h1>
+
+    <p>
+        確認のため電子メールを送信しました。<br>
+        送信されたリンクに従って、アカウント登録を完了します。<br>
+        メールが表示されない場合は、スパムフォルダーをご確認ください。<br>
+        数分以内に確認メールが届かない場合は、お問い合わせください。
+    </p>
+
+{% endblock %}
