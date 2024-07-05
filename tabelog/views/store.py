@@ -136,6 +136,12 @@ class ReservationCreateView(BasePaidPermission, CreateView):
         kwargs['store'] = store  # フォームにstoreオブジェクトを渡す
         return kwargs
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        store_id = self.kwargs.get('store_id')
+        context['store'] = get_object_or_404(Store, id=store_id)
+        return context
+
     def get_success_url(self) -> str:
         return reverse_lazy('tabelog:store-detail', kwargs={'pk': self.kwargs['store_id']})
 

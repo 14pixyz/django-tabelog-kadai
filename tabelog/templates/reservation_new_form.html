@@ -9,6 +9,6 @@
         {{ form|bootstrap }}
         <br>
         <button name="btn_submit" type="submit" class="btn btn-primary">予約する</button>
-        <a href="javascript:history.back()" class="text-secondary">戻る</a>
+        <a href="{% url 'tabelog:store-detail' store.pk %}" class="text-secondary">戻る</a>
     </form>
 {% endblock %}

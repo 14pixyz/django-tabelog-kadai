@@ -39,7 +39,6 @@ class ReservationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.store = kwargs.pop('store', None)
-        print(f'Store: {self.store}')  # デバッグ用
         super().__init__(*args, **kwargs)
 
     def clean_date(self):
