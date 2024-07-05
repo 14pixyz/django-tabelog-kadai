@@ -37,15 +37,26 @@ class ReservationForm(forms.ModelForm):
             'people': '予約人数',
         }
 
+    def __init__(self, *args, **kwargs):
+        self.store = kwargs.pop('store', None)
+        print(f'Store: {self.store}')  # デバッグ用
+        super().__init__(*args, **kwargs)
+
     def clean_date(self):
         date = self.cleaned_data['date']
-        # ここの条件を今日の日付より以前の場合にする
-
-        dt = datetime.date.today()  # ローカルな現在の日付と時刻を取得
-
+        dt = datetime.date.today()
         if dt > date:
             raise forms.ValidationError('過去の日付は入力することはできません。')
         return date
+
+    def clean_time(self):
+        time = self.cleaned_data['time']
+        if self.store:
+            open_time = self.store.opening_hours
+            close_time = self.store.close_hours
+            if not (open_time <= time <= close_time):
+                raise forms.ValidationError('営業時間外です。')
+        return time
 
 
 class ReviewForm(forms.ModelForm):

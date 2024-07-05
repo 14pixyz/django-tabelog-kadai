@@ -4,7 +4,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 
 from ..forms import ReservationForm, ReviewForm
 
@@ -128,6 +128,13 @@ class ReservationCreateView(BasePaidPermission, CreateView):
         object.store_id = self.kwargs['store_id']
         object.save()
         return super().form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        store_id = self.kwargs.get('store_id')  # URLパラメータからstore_idを取得
+        store = get_object_or_404(Store, id=store_id)  # Storeオブジェクトを取得
+        kwargs['store'] = store  # フォームにstoreオブジェクトを渡す
+        return kwargs
 
     def get_success_url(self) -> str:
         return reverse_lazy('tabelog:store-detail', kwargs={'pk': self.kwargs['store_id']})
