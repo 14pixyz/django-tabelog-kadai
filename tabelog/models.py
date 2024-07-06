@@ -88,7 +88,7 @@ class Store(models.Model):
     close_hours = models.TimeField()
     budget = models.PositiveIntegerField()
     tel = models.CharField(max_length=15)
-    image = models.ImageField(null=True, default='media/noImage.png')
+    image = models.ImageField(null=True, default='noImage.png')
     create_datetime = models.DateTimeField(auto_now_add=True)
     update_datetime = models.DateTimeField(auto_now=True)
     category = models.ManyToManyField(Category, related_name='tags', blank=True)
