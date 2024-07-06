@@ -34,7 +34,7 @@ urlpatterns = [
     # お気に入り
     path('favarit/create/store/<int:store_id>/', store.FavaritCreateView.as_view(), name='favarit-create'),
     path('favarit/delete/store/<int:store_id>/', store.FavaritDeleteView.as_view(), name='favarit-delete'),
-    path('favarit/list/', store.FavaritListView.as_view(), name='favarit-list'),
+    path('favarit/list/<int:user_id>/', store.FavaritListView.as_view(), name='favarit-list'),
 
     # 管理者画面
     path('supporter/login/', adminmenu.SupporterLoginView.as_view(), name='ad-login'),
