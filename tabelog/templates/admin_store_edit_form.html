@@ -4,7 +4,7 @@
 
 {% block content %}
     <h1>店舗情報の更新</h1>
-    <form method='POST'>
+    <form method='POST' enctype="multipart/form-data">
         {% csrf_token %}
         {{ form|bootstrap }}
         <br>
