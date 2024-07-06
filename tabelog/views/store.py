@@ -216,6 +216,9 @@ class FavaritListView(UserPassesTestMixin, ListView):
     def handle_no_permission(self):
         return redirect('tabelog:store-list')
 
+    def handle_no_permission(self):
+        return redirect('tabelog:store-list')
+
     raise_exception = False
     login_url = reverse_lazy('tabelog:store-list')
 
