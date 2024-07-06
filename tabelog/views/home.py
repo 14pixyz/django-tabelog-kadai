@@ -12,10 +12,10 @@ class MemberView(UserPassesTestMixin, DetailView):
         return self.request.user.is_authenticated and int(self.request.user.id) == self.kwargs['pk']
 
     def handle_no_permission(self):
-        return redirect('tabelog:home')
+        return redirect('tabelog:store-list')
 
     raise_exception = False
-    login_url = reverse_lazy('tabelog:home')
+    login_url = reverse_lazy('tabelog:store-list')
 
     template_name = 'member_menu.html'
     model = CustomUser
@@ -27,10 +27,10 @@ class MemberEditView(UserPassesTestMixin, UpdateView):
         return self.request.user.is_authenticated
 
     def handle_no_permission(self):
-        return redirect('tabelog:home')
+        return redirect('tabelog:store-list')
 
     raise_exception = False
-    login_url = reverse_lazy('tabelog:home')
+    login_url = reverse_lazy('tabelog:store-list')
 
     template_name = 'member_edit_form.html'
     model = CustomUser
@@ -46,10 +46,10 @@ class EmailEditView(UserPassesTestMixin, UpdateView):
         return self.request.user.is_authenticated
 
     def handle_no_permission(self):
-        return redirect('tabelog:home')
+        return redirect('tabelog:store-list')
 
     raise_exception = False
-    login_url = reverse_lazy('tabelog:home')
+    login_url = reverse_lazy('tabelog:store-list')
 
     template_name = 'email_edit_form.html'
     model = CustomUser
