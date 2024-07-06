@@ -216,8 +216,15 @@ class FavaritListView(UserPassesTestMixin, ListView):
     def handle_no_permission(self):
         return redirect('tabelog:store-list')
 
-    def handle_no_permission(self):
-        return redirect('tabelog:store-list')
+    # 現在のユーザーの情報を表示
+    def get_queryset(self):
+        user = self.request.user
+        return Favarit.objects.filter(user=user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['favarits'] = self.get_queryset()  # フィルタリングされたクエリセットを取得
+        return context
 
     raise_exception = False
     login_url = reverse_lazy('tabelog:store-list')
@@ -225,8 +232,3 @@ class FavaritListView(UserPassesTestMixin, ListView):
     template_name = 'favarit_list.html'
     model = Favarit
     paginate_by = 10
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['favarits'] = Favarit.objects.all()
-        return context
