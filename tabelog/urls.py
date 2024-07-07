@@ -28,7 +28,7 @@ urlpatterns = [
 
     # 予約
     path('reservation/new/store/<int:store_id>/',store.ReservationCreateView.as_view(), name='reservation-new-form'),
-    path('reservation/list/',store.ReservationListView.as_view(), name='reservation-list'),
+    path('reservation/list/<int:user_id>/',store.ReservationListView.as_view(), name='reservation-list'),
     path('reservation/cancel/<int:pk>/',store.ReservationDeleteView.as_view(), name='reservation-cancel'),
 
     # お気に入り

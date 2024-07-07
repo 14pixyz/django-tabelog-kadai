@@ -160,9 +160,14 @@ class ReservationListView(UserPassesTestMixin, ListView):
     model = Reservation
     paginate_by = 10
 
+    # 現在のユーザーの情報を表示
+    def get_queryset(self):
+        user = self.request.user
+        return Reservation.objects.filter(user=user)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['reservations'] = Reservation.objects.all()
+        context['reservations'] = self.get_queryset()
         return context
 
 
@@ -175,7 +180,11 @@ class ReservationDeleteView(UserPassesTestMixin, DeleteView):
 
     template_name = 'reservation_confirm_delete.html'
     model = Reservation
-    success_url = reverse_lazy('tabelog:reservation-list')
+
+    # パスパラメータを渡す
+    def get_success_url(self):
+        user_id = self.request.user.pk
+        return reverse_lazy('tabelog:reservation-list', kwargs={'user_id': user_id})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -216,6 +225,13 @@ class FavaritListView(UserPassesTestMixin, ListView):
     def handle_no_permission(self):
         return redirect('tabelog:store-list')
 
+    raise_exception = False
+    login_url = reverse_lazy('tabelog:store-list')
+
+    template_name = 'favarit_list.html'
+    model = Favarit
+    paginate_by = 10
+
     # 現在のユーザーの情報を表示
     def get_queryset(self):
         user = self.request.user
@@ -225,10 +241,3 @@ class FavaritListView(UserPassesTestMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['favarits'] = self.get_queryset()  # フィルタリングされたクエリセットを取得
         return context
-
-    raise_exception = False
-    login_url = reverse_lazy('tabelog:store-list')
-
-    template_name = 'favarit_list.html'
-    model = Favarit
-    paginate_by = 10
