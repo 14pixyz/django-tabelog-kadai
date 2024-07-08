@@ -50,10 +50,12 @@ class ReservationForm(forms.ModelForm):
 
     def clean_time(self):
         time = self.cleaned_data['time']
+        date = self.cleaned_data.get('date')  # 'date'フィールドの値を取得
         time_now = datetime.datetime.now().time() #現在時刻の取得
+        date_now = datetime.date.today()
 
-        if time_now > time:
-            raise forms.ValidationError('過去の日時は入力することはできません。')
+        if date == date_now and time_now > time:
+            raise forms.ValidationError('現在時刻以降の時刻を入力してください。')
 
         if self.store:
             open_time = self.store.opening_hours
